@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import HomePage from "./components/home/HomePage";
 
 interface State {}
 interface Props {}
@@ -42,6 +43,7 @@ const Home = () => {
         <span className="btn-login-txt">Zaloguj się</span>
       </Button>
       <h1>Task manager</h1>
+        <HomePage />
     </div>
   );
 };
