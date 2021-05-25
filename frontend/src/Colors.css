@@ -1,0 +1,14 @@
+:root {
+  --white: #fff;
+  --black: #000;
+  --primary: #3f51b5;
+  --primary_l: #5d72e5;
+  --primary_d: #303f9f;
+  --secondary: #03a9f4;
+  --secondary_l: #65caf8;
+  --secondary_d: #007fb8;
+  --light_gray: #ededed;
+  --light_medium_gray: #bdbdbd;
+  --medium_gray: #757575;
+  --font_color: #212121;
+}
