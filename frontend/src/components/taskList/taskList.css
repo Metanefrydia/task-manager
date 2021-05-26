@@ -1,0 +1,27 @@
+.table-main {
+  max-width: 75%;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.table {
+  /*border-spacing: 0 5px !important;*/
+  /*border-collapse: separate !important;*/
+  /*border-collapse: separate;*/
+  /*border-spacing: 0px 50px;*/
+  /*max-width: 75%;*/
+}
+
+.color-rec-head {
+  /* ogarnąć width cellsa */
+  max-width: 50px;
+}
+
+.color-rec {
+  max-width: 50px;
+  background-color: red;
+}
+
+.row {
+  margin: 10px 10px 10px 10px;
+}

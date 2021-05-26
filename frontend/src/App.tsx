@@ -42,7 +42,7 @@ const Home = () => {
       >
         <span className="btn-login-txt">Zaloguj się</span>
       </Button>
-      <h1>Task manager</h1>
+      {/*<h1>Task manager</h1>*/}
       <HomePage />
     </div>
   );
