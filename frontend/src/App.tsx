@@ -1,7 +1,9 @@
 import React from "react";
 import "./App.css";
+import Nav from "./common/nav/Nav";
+import { RegisterPage } from "./components/register/RegisterPage";
+import { LoginPage } from "./components/login/LoginPage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Button } from "@material-ui/core";
 
 interface State {}
 interface Props {}
@@ -11,8 +13,11 @@ export class App extends React.Component<Props, State> {
     return (
       <div className="App">
         <BrowserRouter>
+          <Nav />
           <Switch>
             <Route path="/" exact component={Home} />
+            <Route path="/signup" exact component={RegisterPage} />
+            <Route path="/login" exact component={LoginPage} />
           </Switch>
         </BrowserRouter>
       </div>
@@ -22,25 +27,7 @@ export class App extends React.Component<Props, State> {
 
 const Home = () => {
   return (
-    <div className="App">
-      <Button
-        variant="contained"
-        type="submit"
-        color="secondary"
-        className="btn-login"
-        size="large"
-      >
-        <span className="btn-login-txt">Zarejestruj się</span>
-      </Button>
-      <Button
-        variant="outlined"
-        type="submit"
-        color="secondary"
-        className="btn-login"
-        size="large"
-      >
-        <span className="btn-login-txt">Zaloguj się</span>
-      </Button>
+    <div>
       <h1>Task manager</h1>
     </div>
   );
