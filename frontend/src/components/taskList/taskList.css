@@ -1,15 +1,21 @@
 .table-main {
+  height: 100%;
   max-width: 75%;
   justify-content: center;
   margin-top: 15px;
+
 }
 
 .table {
+  border-width: 0;
+  border-right-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 1px;
+  border-color: #C8C8C8;
+  border-style: solid;
+
   /*border-spacing: 0 5px !important;*/
   /*border-collapse: separate !important;*/
-  /*border-collapse: separate;*/
-  /*border-spacing: 0px 50px;*/
-  /*max-width: 75%;*/
   font-weight: bold;
 }
 
@@ -22,7 +28,7 @@
   display: flex;
   min-width: 5px;
   width: 30px;
-  background-color: red;
+  background-color: #F1503A;
   align-items: center;
   justify-content: center;
 }
@@ -39,8 +45,9 @@
 }
 
 .add-row-text {
+  color: #979797;
   font-weight: bold !important;
-  background-color: #bdbdbd;
+  background-color: #EDEDED;
 }
 
 .head-text {
@@ -52,7 +59,7 @@
   border-width: 0;
   border-right-width: 1px;
   border-left-width: 1px;
-  border-color: black;
+  border-color: #C8C8C8;
   border-style: solid;
 }
 
@@ -60,7 +67,7 @@
   border-width: 0;
   border-right-width: 1px;
   border-left-width: 1px;
-  border-color: black;
+  border-color: #C8C8C8;
   border-style: solid;
   font-weight: bold !important;
 }
