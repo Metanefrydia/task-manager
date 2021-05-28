@@ -1,25 +1,31 @@
 import React from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-// import TableCell from "@material-ui/core/TableCell";
-import MuiTableCell from '@material-ui/core/TableCell';
+import MuiTableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import "./taskList.css";
-import {Box, Collapse, IconButton, Typography, withStyles} from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Collapse,
+  IconButton,
+  TextField,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import TableRowComponent from "./taskListRow";
 
-const TableCell = withStyles(theme => ({
+const TableCell = withStyles((theme) => ({
   root: {
     height: 10,
-    padding:3,
-    borderColor: '#C8C8C8',
+    padding: 3,
+    borderColor: "#C8C8C8",
     borderTop: "1px",
-  }
+  },
 }))(MuiTableCell);
 
 function createData(
@@ -48,19 +54,70 @@ export default function BasicTable() {
     inProgressColor: {
       backgroundColor: "#FFEF62",
       fontWeight: "bold" as "bold",
+      width: "100%",
+      color: "black",
     },
-    doneColor: { backgroundColor: "#33EB91", fontWeight: "bold" as "bold" },
-    toDoColor: { backgroundColor: "#CFCFCF", fontWeight: "bold" as "bold" },
-    pausedColor: { backgroundColor: "#F1503A", fontWeight: "bold" as "bold" },
+    doneColor: {
+      backgroundColor: "#33EB91",
+      fontWeight: "bold" as "bold",
+      width: "100%",
+      color: "black",
+    },
+    toDoColor: {
+      backgroundColor: "#CFCFCF",
+      fontWeight: "bold" as "bold",
+      width: "100%",
+      color: "black",
+    },
+    pausedColor: {
+      backgroundColor: "#F1503A",
+      fontWeight: "bold" as "bold",
+      width: "100%",
+      color: "black",
+    },
+    editing: false,
+    newTask: "",
+    rows: rows,
   });
 
   const [open, setOpen] = React.useState(false);
 
+  const handleAdding = (event: React.MouseEvent<HTMLElement>) => {
+    setState({ ...state, editing: true });
+  };
+
+  const handleAddButton = (event: React.MouseEvent<HTMLElement>) => {
+    state.rows.push(
+      createData("red", state.newTask, "undefiend", "Do zrobienia")
+    );
+    setState({ ...state, editing: false });
+  };
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, newTask: event.target.value });
+  };
+
   return (
-    <TableContainer className="table-main" component={Paper}>
+    <TableContainer className="table-main">
+      <p
+        style={{
+          textAlign: "left",
+          color: "#f1503a",
+          fontSize: "24px",
+          fontWeight: "bold",
+        }}
+      >
+        Rodzina
+      </p>
       <Table className="table" aria-label="simple table">
         <TableHead>
-          <TableRow style={{ height: 'auto !important', borderTop: '10px', borderColor: 'yellow' }}>
+          <TableRow
+            style={{
+              height: "auto !important",
+              borderTop: "10px",
+              borderColor: "yellow",
+            }}
+          >
             {/* cell z kolorkiem */}
             <TableCell className="color-rec-head"></TableCell>
             <TableCell></TableCell>
@@ -74,11 +131,10 @@ export default function BasicTable() {
         </TableHead>
 
         <TableBody>
-          {rows.map((row) => {
+          {state.rows.map((row) => {
             let style;
             if (row.status === "W trakcie") {
               style = state.inProgressColor;
-              console.log("GLÓWNA: " + style);
             } else if (row.status === "Wykonano") {
               style = state.doneColor;
             } else if (row.status === "Do zrobienia") {
@@ -88,13 +144,15 @@ export default function BasicTable() {
             }
 
             return (
-                <TableRowComponent key={row.name} {...row} style={style} ></TableRowComponent>
+              <TableRowComponent
+                key={row.name}
+                {...row}
+                style={style}
+              ></TableRowComponent>
             );
           })}
 
-          {/*  adding row siup */}
-          {/*<TableRowComponent name={"+ Dodaj"} person={""} status={""} style={{}} />*/}
-          <TableRow style={{ height: '10px !important' }} >
+          <TableRow className="row">
             <TableCell id={"color"} className="color-rec">
               <IconButton
                 aria-label="expand row"
@@ -104,51 +162,57 @@ export default function BasicTable() {
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             </TableCell>
-            <TableCell className="add-row-text"><div style={{ color: "#979797" }}>+ Dodaj</div></TableCell>
-            <TableCell className="add-row-text"></TableCell>
-            <TableCell className="add-row-text"></TableCell>
+
+            <TableCell
+              id={"addCell"}
+              onClick={handleAdding}
+              className="add-row-text"
+            >
+              {state.editing ? (
+                <TextField
+                  className="new-task-input"
+                  id="standard-basic"
+                  placeholder={"Dodaj zadanie"}
+                  onChange={handleInput}
+                />
+              ) : (
+                <div style={{ color: "#979797" }}>+ Dodaj</div>
+              )}
+            </TableCell>
+
+            <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
+            <TableCell className="add-row-text">
+              {state.editing ? (
+                <div className="button-div">
+                  <Button
+                    id={"menuButton"}
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    color="primary"
+                    style={{ width: "100%", backgroundColor: "#03A9F4" }}
+                    onClick={handleAddButton}
+                  >
+                    DODAJ
+                  </Button>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </TableCell>
           </TableRow>
 
-
-
-
           <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
               <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box margin={1}>
-                  <Typography variant="h6" gutterBottom component="div">
-                    Historyyy
+                  <Typography variant="h5" gutterBottom component="div">
+                    Dodawanie tasku
                   </Typography>
-                  <Table size="small" aria-label="purchases">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Customer</TableCell>
-                        <TableCell align="right">Amount</TableCell>
-                        <TableCell align="right">Total price ($)</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {/*<TableBody>*/}
-                    {/*  {row.history.map((historyRow) => (*/}
-                    {/*      <TableRow key={historyRow.date}>*/}
-                    {/*        <TableCell component="th" scope="row">*/}
-                    {/*          {historyRow.date}*/}
-                    {/*        </TableCell>*/}
-                    {/*        <TableCell>{historyRow.customerId}</TableCell>*/}
-                    {/*        <TableCell align="right">{historyRow.amount}</TableCell>*/}
-                    {/*        <TableCell align="right">*/}
-                    {/*          {Math.round(historyRow.amount * row.price * 100) / 100}*/}
-                    {/*        </TableCell>*/}
-                    {/*      </TableRow>*/}
-                    {/*  ))}*/}
-                    {/*</TableBody>*/}
-                  </Table>
                 </Box>
               </Collapse>
             </TableCell>
           </TableRow>
-
-
         </TableBody>
       </Table>
     </TableContainer>
