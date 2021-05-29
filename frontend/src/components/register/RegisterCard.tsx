@@ -21,6 +21,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "./Register.css";
+import AuthenticationService from "../../services/service";
 
 interface State {
   email: string;
@@ -106,11 +107,29 @@ const RegisterCard = () => {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    setValues({
-      ...values,
-      message: "",
-    });
-    console.log(values);
+    const token = {
+      email: values.email,
+      password: values.password,
+      name: values.username,
+    };
+
+    AuthenticationService.register(token).then(
+      () => {
+        window.location.href = "/";
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setValues({
+          ...values,
+          message: resMessage,
+        });
+      }
+    );
   };
 
   return (
