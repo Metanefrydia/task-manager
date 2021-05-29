@@ -14,7 +14,6 @@
 
 .login-link-des {
   font: "Roboto Slab";
-  /*fontStyle: normal;*/
   font-weight: 400;
   font-size: 17px;
   line-height: 16px;
@@ -45,7 +44,6 @@
 
 .login-text {
   font: "Roboto";
-  /*fontStyle: normal;*/
   font-weight: 400;
   font-size: 25px;
   line-height: 2px;
