@@ -1,19 +1,27 @@
 import React from "react";
 import TaskManagerLogo from "../../images/TaskManagerLogo.png";
 import "./Nav.css";
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import AuthenticationService from "../../services/service";
 
 interface State {
   logged: boolean;
 }
 
 const Nav = () => {
-  const currentUser = null;
+  const currentUser = AuthenticationService.getUserDetails()?.name;
 
   const [states, setState] = React.useState<State>({
-    logged: false,
+    logged: true,
   });
+
+  const logOutHandle = () => {
+    setState({
+      logged: false,
+    });
+    AuthenticationService.logout();
+  };
 
   return (
     <nav>
@@ -55,9 +63,8 @@ const Nav = () => {
               <Button
                 variant="outlined"
                 color="secondary"
-                component={Link}
-                to="/"
                 style={{ marginRight: "20px" }}
+                onClick={logOutHandle}
               >
                 <span className="btn-email-text btn-texts-login">
                   wyloguj się
