@@ -9,10 +9,6 @@
 .table {
   background-color: #e5e5e5;
   border-width: 0;
-  /*border-right-width: 1px;*/
-  /*border-left-width: 1px;*/
-  /*border-bottom-width: 1px;*/
-  /*border-color: #c8c8c8;*/
   border-style: hidden;
   font-weight: bold;
 }
@@ -41,13 +37,7 @@
 }
 
 .row {
-  border-width: 2px;
-  /*border-left-width: 1px;*/
-  /*border-bottom-width: 1px;*/
-
-  /*border-color: #c8c8c8;*/
-  border-style: solid;
-
+  border-width: 1px;
   max-height: 10px;
   margin: 10px 10px 10px 10px;
   background-color: white;
