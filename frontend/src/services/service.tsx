@@ -38,7 +38,7 @@ class AuthenticationService {
   public logout(): void {
     this.token = "";
     window.localStorage.removeItem("mean-token");
-    window.location.href = "/";
+    window.location.href = "/login";
   }
 
   public getUserDetails(): UserDetails | null {

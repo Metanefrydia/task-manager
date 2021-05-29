@@ -4,12 +4,10 @@ import {
   Button,
   InputAdornment,
   IconButton,
-  FilledInput,
   FormControl,
   InputLabel,
   Grid,
   Box,
-  Typography,
   Card,
   CardContent,
   FormHelperText,
@@ -89,6 +87,12 @@ const LoginCard = () => {
           ...values,
           message: resMessage,
         });
+        if (Boolean(resMessage)) {
+          setValues({
+            ...values,
+            message: "Błędne dane",
+          });
+        }
       }
     );
   };
