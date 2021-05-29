@@ -21,6 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 //import "./Login.css";
 import "../register/Register.css";
+import AuthenticationService from "../../services/service";
 
 interface State {
   password: string;
@@ -68,12 +69,28 @@ const LoginCard = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setValues({
-      ...values,
-      message: "",
-    });
+    const token = {
+      email: values.email,
+      password: values.password,
+    };
 
-    console.log(values);
+    AuthenticationService.login(token).then(
+      () => {
+        //window.location.href = "/";
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setValues({
+          ...values,
+          message: resMessage,
+        });
+      }
+    );
   };
 
   const validateEmail = (value: any) => {
