@@ -17,7 +17,6 @@ import {
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
-//import "./Login.css";
 import "../register/Register.css";
 import AuthenticationService from "../../services/service";
 
