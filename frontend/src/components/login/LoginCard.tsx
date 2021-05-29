@@ -76,7 +76,7 @@ const LoginCard = () => {
 
     AuthenticationService.login(token).then(
       () => {
-        window.location.href = "/";
+        //window.location.href = "/";
       },
       (error) => {
         const resMessage =
