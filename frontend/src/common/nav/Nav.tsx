@@ -13,7 +13,7 @@ const Nav = () => {
   const currentUser = AuthenticationService.getUserDetails()?.name;
 
   const [states, setState] = React.useState<State>({
-    logged: true,
+    logged: false,
   });
 
   const logOutHandle = () => {
