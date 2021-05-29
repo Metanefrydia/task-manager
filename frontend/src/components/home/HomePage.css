@@ -54,3 +54,17 @@
   font-style: normal;
   text-align: left;
 }
+
+.datepicker-date-day-Item {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid #fdfbfb; /* color: #e6545b; */
+  margin: 0 20px 0 20px;
+}

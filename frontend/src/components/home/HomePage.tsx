@@ -14,7 +14,7 @@ export default function HomePage() {
     <div>
       <div className="date-container">
         <ReactHorizontalDatePicker
-          selectedDay={20}
+          // selectedDay={5}
           enableScroll={true}
           enableDays={180}
           enableDaysBefore={1}

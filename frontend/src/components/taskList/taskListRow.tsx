@@ -66,10 +66,12 @@ export default function TableRowComponent(props: {
   const [buttonState, setButtonState] = React.useState({
     statusText: props.status,
     statusStyle: props.style,
+    person: props.person,
   });
 
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
 
   const [menu, setMenu] = React.useState({
     inProgress: "W trakcie",
@@ -84,6 +86,18 @@ export default function TableRowComponent(props: {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl2(event.currentTarget);
+  };
+
+  const handleClosePerson = () => {
+    setAnchorEl2(null);
+  };
+
+  const handlePersonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setButtonState({ ...buttonState, person: event.currentTarget.id });
   };
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -149,8 +163,33 @@ export default function TableRowComponent(props: {
         <TableCell id={"name"} className="task-text" component="th" scope="row">
           {props.name}
         </TableCell>
+
         <TableCell id={"person"} className="person-text" align="center">
-          {props.person}
+          <Button
+            style={{ width: "100%" }}
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleClickPerson}
+          >
+            {buttonState.person}
+          </Button>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl2}
+            keepMounted
+            open={Boolean(anchorEl2)}
+            onClose={handleClosePerson}
+          >
+            <MenuItem id={"Andżej"} onClick={handlePersonMenuClick}>
+              Andżej
+            </MenuItem>
+            <MenuItem id={"Sebek"} onClick={handlePersonMenuClick}>
+              Sebek
+            </MenuItem>
+            <MenuItem id={"Karyna"} onClick={handlePersonMenuClick}>
+              Karyna
+            </MenuItem>
+          </Menu>
         </TableCell>
 
         <TableCell id={"status"} align="center">
