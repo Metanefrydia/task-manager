@@ -5,33 +5,15 @@ const User = mongoose.model('User');
 module.exports.addGroup = async (req, res) => {
     try {
         const group = await Group.create(req.body);
-        // update grup userka
-        // $push
-        // const user = await User.create(req.body){
-        //
-        // }
 
-        //const announcement = await Announcement.create(req.body);
-        //     const user = await User.findOneAndUpdate(
-        //       { _id: req.body.createdBy },
-        //       { $push: { createdAnnouncements: announcement._id } }
-        //     );
-
-        console.log("ID grupy: " + group._id);
-        // console.log(req.body.members)
-        req.body.members.forEach( (id) => {
-            console.log('user id: ' + id);
-            console.log('grupowe id: ' + group._id);
-            const user = User.findOneAndUpdate(
-                { _id: id },
-                { $push: {groups: group._id} }
-            );
-            // console.log(user);
-        });
+        const users = await User.updateMany(
+            { _id: { $in: req.body.members } },
+            { $push: { groups: group._id } }
+        );
 
         res.status(201).json({
           status: "success",
-          data: { group: group },
+          data: { group: group, usersUpdated: users },
         });
       } catch (err) {
         res.status(400).json({
@@ -45,16 +27,10 @@ module.exports.addGroup = async (req, res) => {
 
 module.exports.editGroup = async (req, res) => {
     try{
-        console.log(req.params);
-
         const id = req.params.groupId;
         const groupData = req.body;
-        console.log("ID: " + id);
-        console.log("BODYY: " + JSON.stringify(groupData));
 
-        // ??????????????????
         const group = await Group.findByIdAndUpdate(id, groupData);
-    //    ????????????????????????
 
         res.status(201).json({
             status: "very succes much wow",
@@ -75,8 +51,17 @@ module.exports.getGroups = async (req, res) => {
     try{
         console.log(req.params)
 
-        // const id = req.params.userId;
-        // const membership = await Group.find
+        const id = req.params.userId;
+        const membership = await Group.find(
+            {members: id}
+            )
+
+        console.log(membership);
+
+        res.status(201).json({
+           status: "gucci versace",
+            message: membership,
+        });
     }
 
     catch (err){
