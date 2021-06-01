@@ -1,5 +1,4 @@
 import axios from "axios";
-import React from "react";
 
 export interface UserDetails {
   _id: string;
