@@ -23,6 +23,6 @@ router.post('/add-task', ctrlTask.addTask)
 router.post('/add-group', ctrlGroup.addGroup)
 router.put('/group/:groupId', ctrlGroup.editGroup)
 router.get('/groups/:userId', ctrlGroup.getGroups)
-// endpoint do usuwania
+router.delete('/delete-group/:groupId', ctrlGroup.deleteGroup)
 
 module.exports = router;
