@@ -23,18 +23,27 @@ module.exports.addGroup = async (req, res) => {
       }
 }
 
-// PUT edycja :C, GET ukradniecie grup uzytkownika
-
 module.exports.editGroup = async (req, res) => {
     try{
         const id = req.params.groupId;
         const groupData = req.body;
 
+        const groupBefore = await Group.findById(id)
+        const usersBefore = await User.updateMany(
+            { _id: { $in: groupBefore.members } },
+            { $pull: { groups: id } }
+        );
+
         const group = await Group.findByIdAndUpdate(id, groupData);
 
+        const users = await User.updateMany(
+            { _id: { $in: req.body.members } },
+            { $push: { groups: group._id } }
+        );
+
         res.status(201).json({
-            status: "very succes much wow",
-            data: { group: group },
+            status: "succes",
+            data: { group: group, users: users },
         })
     }
 
@@ -49,27 +58,52 @@ module.exports.editGroup = async (req, res) => {
 
 module.exports.getGroups = async (req, res) => {
     try{
-        console.log(req.params)
 
         const id = req.params.userId;
+
         const membership = await Group.find(
             {members: id}
             )
 
-        console.log(membership);
-
         res.status(201).json({
-           status: "gucci versace",
-            message: membership,
+           status: "succes",
+            data: membership,
         });
     }
 
     catch (err){
         res.status(400).json({
-            status: "not wow",
+            status: "error",
             message: err,
         });
 
     }
 }
 
+module.exports.deleteGroup = async (req,res) => {
+    try{
+
+        const id = req.params.groupId;
+
+        const groupBefore = await Group.findById(id)
+        const usersBefore = await User.updateMany(
+            { _id: { $in: groupBefore.members } },
+            { $pull: { groups: id } }
+        );
+
+        const group = await Group.findByIdAndDelete(
+            {_id: id}
+        );
+
+        res.status(201).json({
+            status: "succes",
+        });
+    }
+
+    catch (err){
+        res.status(400).json({
+            status: "error",
+            message: err,
+        });
+    }
+}
