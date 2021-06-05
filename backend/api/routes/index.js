@@ -1,6 +1,7 @@
 const ctrlAuth = require('../controllers/authentication');
-const ctrlTask = require('../controllers/task-management')
-const ctrlGroup = require('../controllers/group-management')
+const ctrlTask = require('../controllers/task-management');
+const ctrlGroup = require('../controllers/group-management');
+const ctrlUser = require('../controllers/user-management');
 
 const express = require('express');
 const router = express.Router();
@@ -17,12 +18,15 @@ router.post('/register', ctrlAuth.register);
 router.post('/login', ctrlAuth.login);
 
 // task management
-router.post('/add-task', ctrlTask.addTask)
+router.post('/add-task', ctrlTask.addTask);
 
 // group management
-router.post('/add-group', ctrlGroup.addGroup)
-router.put('/group/:groupId', ctrlGroup.editGroup)
-router.get('/groups/:userId', ctrlGroup.getGroups)
-router.delete('/delete-group/:groupId', ctrlGroup.deleteGroup)
+router.post('/add-group', ctrlGroup.addGroup);
+router.put('/group/:groupId', ctrlGroup.editGroup);
+router.get('/groups/:userId', ctrlGroup.getGroups);
+router.delete('/delete-group/:groupId', ctrlGroup.deleteGroup);
+
+// user management
+router.get('/users', ctrlUser.getUsers);
 
 module.exports = router;
