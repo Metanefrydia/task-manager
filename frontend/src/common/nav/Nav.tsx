@@ -10,10 +10,10 @@ interface State {
 }
 
 const Nav = () => {
-  const currentUser = AuthenticationService.getUserDetails()?.name;
+  const currentUser = AuthenticationService.isLoggedIn();
 
   const [states, setState] = React.useState<State>({
-    logged: true,
+    logged: AuthenticationService.isLoggedIn(),
   });
 
   const logOutHandle = () => {
