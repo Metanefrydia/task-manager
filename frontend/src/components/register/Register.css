@@ -1,10 +1,3 @@
-.back-image {
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
 .register-text {
   font: "Roboto";
   font-style: normal;
@@ -23,7 +16,7 @@
 
 .paperStyle {
   min-height: 35vh;
-  min-width: 30vh;
+  min-width: 385px;
   width: 55vh;
   outline-color: blue;
   border: #c79100 4px solid;
