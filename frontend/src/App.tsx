@@ -3,13 +3,12 @@ import "./App.css";
 import Nav from "./common/nav/Nav";
 import { RegisterPage } from "./components/register/RegisterPage";
 import { LoginPage } from "./components/login/LoginPage";
-import { BrowserRouter, Route, Switch} from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 interface State {}
 interface Props {}
 
 export class App extends React.Component<Props, State> {
-
   render() {
     return (
       <div className="App">
@@ -17,7 +16,7 @@ export class App extends React.Component<Props, State> {
           <Nav />
           <Switch>
             <Route path="/" exact>
-              { Home }
+              {Home}
             </Route>
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />

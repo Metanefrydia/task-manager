@@ -157,7 +157,7 @@ const LoginCard = () => {
                   htmlFor="standard-adornment-password"
                   error={Boolean(errors?.password)}
                 >
-                  Password
+                  Hasło
                 </InputLabel>
                 <OutlinedInput
                   id="password"
