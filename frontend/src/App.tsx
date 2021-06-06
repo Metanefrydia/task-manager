@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import "./App.css";
 import Nav from "./common/nav/Nav";
 import { RegisterPage } from "./components/register/RegisterPage";
 import { LoginPage } from "./components/login/LoginPage";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./common/protectedRoute/PrivateRoute";
 
 interface State {}
@@ -16,7 +16,7 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-            <PrivateRoute path="/"  component={Home}  exact />
+            <PrivateRoute path="/" component={Home} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
             <Route path="*">
@@ -28,8 +28,6 @@ export class App extends React.Component<Props, State> {
     );
   }
 }
-
-
 
 const Home = () => {
   return (
