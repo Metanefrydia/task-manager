@@ -10,7 +10,7 @@ interface State {
 }
 
 const Nav = () => {
-  const currentUser = AuthenticationService.isLoggedIn();
+  const currentUser = AuthenticationService.getUserDetails()?._id;
 
   const [states, setState] = React.useState<State>({
     logged: AuthenticationService.isLoggedIn(),
@@ -88,7 +88,7 @@ const Nav = () => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={currentUser ? "/" : "/signup"}
+            to={currentUser ? `/groups/${currentUser}` : "/signup"}
           >
             <span className="btn-signup-text btn-texts-login">
               {currentUser ? "twoje zespoły" : "zarejestruj się"}

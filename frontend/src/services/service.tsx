@@ -72,6 +72,18 @@ class AuthenticationService {
     }
     return response.data;
   }
+
+  public async getGroups(userId: string) {
+    console.log(userId);
+    console.log(this.getToken());
+    await axios.get(`/groups/${userId}`, {
+        headers: {"Authorization" : this.getToken()},
+      })
+      .then((response) => {
+        console.log(response.data);
+        return response.data;
+      });
+  }
 }
 
 export default new AuthenticationService();
