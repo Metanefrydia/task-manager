@@ -4,22 +4,28 @@ import GroupCard from "./GroupCard";
 import { useEffect, useState } from "react";
 import AuthenticationService from "../../services/service";
 
-
 interface RouteParams {
-    id: string;
+  id: string;
 }
 
-interface RecipePage extends RouteComponentProps<RouteParams> {}
+interface GroupPage extends RouteComponentProps<RouteParams> {}
 
-const RecipePage: React.FC<RecipePage> = (props) => {
-    const [group, setData] = useState<any>();
+const GroupPage: React.FC<GroupPage> = (props) => {
+  const [group, setData] = useState<any>();
 
-    return(
-    <div >
-        <GroupCard />
+  useEffect(() => {
+    const readGroups = () => {
+      let id: string = props.match.params.id;
+      AuthenticationService.getGroups(id)
+    };
+    readGroups();
+  }, []);
 
+  return (
+    <div>
+      <GroupCard />
     </div>
-    );
+  );
 };
 
-export default RecipePage;
+export default GroupPage;

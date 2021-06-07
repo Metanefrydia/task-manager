@@ -57,6 +57,7 @@ module.exports.editGroup = async (req, res) => {
 }
 
 module.exports.getGroups = async (req, res) => {
+    console.log("EJOOO")
     try{
 
         const id = req.params.userId;

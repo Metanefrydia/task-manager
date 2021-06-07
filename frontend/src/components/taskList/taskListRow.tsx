@@ -171,7 +171,7 @@ export default function TableRowComponent(props: {
             aria-haspopup="true"
             onClick={handleClickPerson}
           >
-            <span style={{textTransform: "none" }}>{buttonState.person}</span>
+            <span style={{ textTransform: "none" }}>{buttonState.person}</span>
           </Button>
           <Menu
             id="simple-menu"

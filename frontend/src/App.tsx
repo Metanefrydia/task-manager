@@ -8,7 +8,6 @@ import HomePage from "./components/home/HomePage";
 import PrivateRoute from "./common/protectedRoute/PrivateRoute";
 import GroupPage from "./components/groups/GroupPage";
 
-
 interface State {}
 interface Props {}
 
@@ -22,7 +21,7 @@ export class App extends React.Component<Props, State> {
             <PrivateRoute path="/" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
-              <Route path="/groups" exact component={GroupPage} />
+            <Route path="/groups/:id" exact component={GroupPage} />
             <Route path="*">
               <div> 404 Not Found</div>
             </Route>
@@ -32,4 +31,3 @@ export class App extends React.Component<Props, State> {
     );
   }
 }
-
