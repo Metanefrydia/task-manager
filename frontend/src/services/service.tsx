@@ -74,15 +74,19 @@ class AuthenticationService {
   }
 
   public async getGroups(userId: string) {
-    console.log(userId);
-    console.log(this.getToken());
-    await axios.get(`/groups/${userId}`, {
-        headers: {"Authorization" : this.getToken()},
-      })
-      .then((response) => {
-        console.log(response.data);
-        return response.data;
-      });
+    return axios.get(`/groups/${userId}`, {
+      headers: { Authorization: this.getToken() },
+    });
+  }
+
+  public async deleteGroup(groupId: string) {
+    await axios.delete(`/delete-group/${groupId}`, {
+      headers: { Authorization: this.getToken() },
+    });
+  }
+
+  public async getUsers() {
+    return axios.get("/users");
   }
 }
 

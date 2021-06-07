@@ -1,32 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Box, Card, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import "./group.css";
+import AuthenticationService from "../../services/service";
 
-const GroupElement = (props: {
-  name:
-    | boolean
-    | React.ReactChild
-    | React.ReactFragment
-    | React.ReactPortal
-    | null
-    | undefined;
-}) => {
+const GroupElement = (props: any) => {
   return (
     <Box
       style={{
-        paddingBottom: "0px",
-        marginTop: "50px",
-        marginLeft: "16%",
-        marginRight: "10%",
+        padding: "6px",
+        marginTop: "10px",
+        marginLeft: "4%",
+        marginRight: "4%",
+        border: "1px solid #DADADA ",
       }}
       display="flex"
       justifyContent="space-between"
     >
-      <p className="title-text">{props.name}</p>
+      <p className="title-text">{props.group.name}</p>
       <p> Select </p>
       <IconButton aria-label="delete">
-        <DeleteIcon style={{ color: "red" }} />
+        <DeleteIcon
+          style={{ color: "red" }}
+          fontSize="large"
+          onClick={props.deleteHandler}
+        />
       </IconButton>
     </Box>
   );

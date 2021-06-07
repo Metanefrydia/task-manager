@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Box, Card } from "@material-ui/core";
 import GroupElement from "./GroupElement";
 import "./group.css";
+import AuthenticationService from "../../services/service";
 
-const GroupCard = () => {
+const GroupCard = (props: any) => {
+  const [users, setUsers] = useState<any>();
+
+  const readUsers = () => {
+    AuthenticationService.getUsers().then((response) => {
+      console.log(response.data);
+      setUsers(response.data.data.users);
+    });
+  };
+
+  useEffect(() => {
+    readUsers();
+  }, []);
+
+  const deleteGroup = (groupIndex: number, groupId: string) => {
+    props.data.splice(groupIndex, 1);
+    AuthenticationService.deleteGroup(groupId);
+    window.location.reload();
+  };
+
   return (
     <Grid
       container
@@ -17,8 +37,9 @@ const GroupCard = () => {
           style={{
             paddingBottom: "0px",
             marginTop: "50px",
-            marginLeft: "16%",
-            marginRight: "10%",
+            marginLeft: "4%",
+            marginRight: "4%",
+            marginBottom: "4%",
           }}
           display="flex"
           justifyContent="space-between"
@@ -40,7 +61,15 @@ const GroupCard = () => {
           </Button>
         </Box>
 
-        <GroupElement name={"Rodzina"} />
+        {props.data.map((el: any, index: any) => {
+          return (
+            <GroupElement
+              group={el}
+              deleteHandler={() => deleteGroup(index, el._id)}
+              users={users}
+            />
+          );
+        })}
       </Card>
     </Grid>
   );

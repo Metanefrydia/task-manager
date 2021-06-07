@@ -18,7 +18,7 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-              <PrivateRoute path="/" component={HomePage} exact />
+            <PrivateRoute path="/" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
             <Route path="/groups/:id" exact component={GroupPage} />
