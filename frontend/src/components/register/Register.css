@@ -1,0 +1,43 @@
+.register-text {
+  font: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 2px;
+  letter-spacing: 1.25px;
+  color: #212121;
+}
+
+.password-input,
+.login-input {
+  width: 75%;
+  font: "Roboto";
+}
+
+.paperStyle {
+  min-height: 35vh;
+  min-width: 385px;
+  width: 55vh;
+  outline-color: blue;
+  border: #C8C8C8 4px solid;
+  padding-top: 0.5%;
+}
+.login-link {
+  font: "Roboto";
+  color: #03a9f4;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.login-link-des {
+  font: "Roboto";
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 16px;
+  letter-spacing: 0.15px;
+  color: #002226;
+}
+
+.login-link:hover {
+  color: #6ef9ff;
+}
