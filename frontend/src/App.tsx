@@ -6,7 +6,8 @@ import { LoginPage } from "./components/login/LoginPage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import HomePage from "./components/home/HomePage";
 import PrivateRoute from "./common/protectedRoute/PrivateRoute";
-import { Button } from "@material-ui/core";
+import GroupPage from "./components/groups/GroupPage";
+
 
 interface State {}
 interface Props {}
@@ -18,9 +19,10 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-            <PrivateRoute path="/" component={Home} exact />
+            <PrivateRoute path="/" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
+              <Route path="/groups" exact component={GroupPage} />
             <Route path="*">
               <div> 404 Not Found</div>
             </Route>
@@ -31,28 +33,3 @@ export class App extends React.Component<Props, State> {
   }
 }
 
-const Home = () => {
-  return (
-    <div className="App">
-      <Button
-        variant="contained"
-        type="submit"
-        color="secondary"
-        className="btn-login"
-        size="large"
-      >
-        <span className="btn-login-txt">Zarejestruj się</span>
-      </Button>
-      <Button
-        variant="outlined"
-        type="submit"
-        color="secondary"
-        className="btn-login"
-        size="large"
-      >
-        <span className="btn-login-txt">Zaloguj się</span>
-      </Button>
-      <HomePage />
-    </div>
-  );
-};

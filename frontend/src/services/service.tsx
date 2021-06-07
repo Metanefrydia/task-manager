@@ -72,6 +72,12 @@ class AuthenticationService {
     }
     return response.data;
   }
+
+  public async getGroups(userId: number){
+    const response = await axios.get( `/groups/${userId}`, {
+      headers: this.getToken()
+    })
+  }
 }
 
 export default new AuthenticationService();

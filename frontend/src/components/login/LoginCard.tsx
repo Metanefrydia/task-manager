@@ -128,7 +128,7 @@ const LoginCard = () => {
           display="flex"
           justifyContent="flex-start"
         >
-          <p className="register-text">Zaloguj się</p>
+          <p className="title-text">Zaloguj się</p>
         </Box>
         <CardContent>
           <form method="POST" onSubmit={handleLogin}>

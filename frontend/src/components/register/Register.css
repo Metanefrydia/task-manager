@@ -1,4 +1,4 @@
-.register-text {
+.title-text {
   font: "Roboto";
   font-style: normal;
   font-weight: 700;
@@ -17,9 +17,9 @@
 .paperStyle {
   min-height: 35vh;
   min-width: 385px;
-  width: 55vh;
+  width: 50vw;
   outline-color: blue;
-  border: #c79100 4px solid;
+  border: #C8C8C8 4px solid;
   padding-top: 0.5%;
 }
 .login-link {

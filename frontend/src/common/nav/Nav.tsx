@@ -88,7 +88,7 @@ const Nav = () => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={currentUser ? "/" : "/signup"}
+            to={currentUser ? "/groups" : "/signup"}
           >
             <span className="btn-signup-text btn-texts-login">
               {currentUser ? "twoje zespoły" : "zarejestruj się"}
