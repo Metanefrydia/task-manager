@@ -7,7 +7,6 @@
 }
 
 .table {
-  background-color: #e5e5e5;
   border-width: 0;
   border-style: hidden;
   font-weight: bold;
@@ -15,7 +14,6 @@
 
 .table-body {
   width: 100%;
-  background-color: #e5e5e5;
 }
 
 .color-rec-head {
