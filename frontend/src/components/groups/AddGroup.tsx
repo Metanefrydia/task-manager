@@ -12,40 +12,37 @@ import {
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import "./group.css";
-import AuthenticationService, {UserDetails} from "../../services/service";
+import AuthenticationService, { UserDetails } from "../../services/service";
 
-interface userSelect{
-    name: string | undefined;
-    _id : string | undefined;
+interface userSelect {
+  name: string | undefined;
+  _id: string | undefined;
 }
 
 const AddGroup = (props: any) => {
-  const user = AuthenticationService.getUserDetails();
+  const curentUser: UserDetails | null = AuthenticationService.getUserDetails();
   const [name, setName] = useState({
-      name: "",
+    name: "",
   });
   // @ts-ignore
-  const [members, setMembers] = useState<UserDetails[]>([ user
-  ]);
+  const [members, setMembers] = useState<UserDetails[]>([curentUser]);
 
-
-    const handleChange = (prop:string) => (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setName({ ...name, [prop]: event.target.value });
+  const handleChange =
+    (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setName({ ...name, [prop]: event.target.value });
     };
 
-
-    const handleMembers = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleMembers = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMembers(event.target.value as UserDetails[]);
-
   };
 
   const onAdd = () => {
     const groupData = {
       name: name.name,
-      members: members.map((user)=> { // @ts-ignore
-          return user._id}),
+      members: members.map((user) => {
+        // @ts-ignore
+        return user._id;
+      }),
     };
 
     AuthenticationService.addGroup(groupData);
@@ -77,7 +74,7 @@ const AddGroup = (props: any) => {
         id="grup-name"
         label="nazwa"
         variant="outlined"
-        placeholder="Nazwa"
+        placeholder="Nazwa grupy..."
         value={name.name}
         onChange={handleChange("name")}
       />
@@ -93,17 +90,26 @@ const AddGroup = (props: any) => {
         renderValue={(selected) => (
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {(selected as UserDetails[]).map((value) => (
-              <Chip key={value._id} label={value.name} style={{ margin: "2px" }} />
+              <Chip
+                key={value._id}
+                label={value.name}
+                style={{ margin: "2px" }}
+              />
             ))}
           </div>
         )}
         MenuProps={MenuProps}
       >
-        {props.users.map((user: any) => (
-          <MenuItem key={user._id} value={user}>
-            {user.name}
-          </MenuItem>
-        ))}
+        {props.users.map((user: any) => {
+          // @ts-ignore
+          if (user._id != curentUser._id) {
+            return (
+              <MenuItem key={user._id} value={user}>
+                {user.name}
+              </MenuItem>
+            );
+          }
+        })}
       </Select>
 
       <div>
