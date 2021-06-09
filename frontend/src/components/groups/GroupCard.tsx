@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Box, Card } from "@material-ui/core";
 import GroupElement from "./GroupElement";
+import AddGroup from "./AddGroup";
 import "./group.css";
+
 import AuthenticationService from "../../services/service";
 
 const GroupCard = (props: any) => {
   const [users, setUsers] = useState<any>();
+  const [visable, setVisable] = useState(false);
 
   const readUsers = () => {
     AuthenticationService.getUsers().then((response) => {
@@ -22,6 +25,14 @@ const GroupCard = (props: any) => {
     props.data.splice(groupIndex, 1);
     AuthenticationService.deleteGroup(groupId);
     window.location.reload();
+  };
+
+  const cancelAdd = () => {
+    setVisable(false);
+  };
+
+  const onClick = () => {
+    setVisable(true);
   };
 
   return (
@@ -46,6 +57,7 @@ const GroupCard = (props: any) => {
         >
           <p className="title-text">Twoje grupy</p>
           <Button
+            onClick={onClick}
             variant="contained"
             color="secondary"
             size="small"
@@ -70,6 +82,10 @@ const GroupCard = (props: any) => {
             />
           );
         })}
+
+        {visable ? (
+          <AddGroup cancelAdd={() => cancelAdd()} users={users} />
+        ) : null}
       </Card>
     </Grid>
   );

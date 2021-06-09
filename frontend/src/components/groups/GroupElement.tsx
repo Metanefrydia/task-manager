@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Button, Grid, Box, Card, IconButton } from "@material-ui/core";
+import React from "react";
+import { Box, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import "./group.css";
-import AuthenticationService from "../../services/service";
 
 const GroupElement = (props: any) => {
   return (

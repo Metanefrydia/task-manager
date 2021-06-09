@@ -84,6 +84,18 @@ class AuthenticationService {
       headers: { Authorization: this.getToken() },
     });
   }
+  public async addGroup(data: any) {
+    await axios.post(
+      "/add-group",
+      {
+        name: data.name,
+        members: data.members,
+      },
+      {
+        headers: { Authorization: this.getToken() },
+      }
+    );
+  }
 
   public async getUsers() {
     return axios.get("/users");
