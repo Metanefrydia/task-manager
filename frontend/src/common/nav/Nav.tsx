@@ -3,22 +3,23 @@ import TaskManagerLogo from "../../images/TaskManagerLogo.png";
 import "./Nav.css";
 import { Button, Grid } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import AuthenticationService from "../../services/service";
+import AuthenticationService from "../../services/AuthenticationService";
 
 interface State {
   logged: boolean;
+  userId: string | undefined;
 }
 
 const Nav = () => {
-  const currentUser = AuthenticationService.getUserDetails()?._id;
-
-  const [states, setState] = React.useState<State>({
+  const [state, setState] = React.useState<State>({
     logged: AuthenticationService.isLoggedIn(),
+    userId: AuthenticationService.getUserDetails()?._id,
   });
 
   const logOutHandle = () => {
     setState({
       logged: false,
+      userId: "",
     });
     AuthenticationService.logout();
   };
@@ -59,7 +60,7 @@ const Nav = () => {
           style={{ paddingRight: "25px" }}
         >
           <div style={{ paddingTop: "5px" }}>
-            {currentUser ? (
+            {state.logged ? (
               <Button
                 variant="outlined"
                 color="secondary"
@@ -88,10 +89,10 @@ const Nav = () => {
             variant="contained"
             color="secondary"
             component={Link}
-            to={currentUser ? `/groups/${currentUser}` : "/signup"}
+            to={state.logged ? `/groups/${state.userId}` : "/signup"}
           >
             <span className="btn-signup-text btn-texts-login">
-              {currentUser ? "twoje zespoły" : "zarejestruj się"}
+              {state.logged ? "twoje zespoły" : "zarejestruj się"}
             </span>
           </Button>
         </Grid>

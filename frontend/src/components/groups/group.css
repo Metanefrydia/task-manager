@@ -8,6 +8,16 @@
   color: #212121;
 }
 
+.element-title-text {
+  font: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 2px;
+  letter-spacing: 1.25px;
+  color: #212121;
+}
+
 .groupStyle {
   width: 1100px;
   min-height: 600px;
@@ -17,4 +27,43 @@
   padding-bottom: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.infoText {
+  font: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #979797;
+}
+
+.inRowInfo {
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+.inRowElement {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+  margin-bottom: 10px;
+  margin-left: 4%;
+  margin-right: 4%;
+  border: 1px solid #dadada;
+  display: grid;
+  gap: 2%;
+  grid-template-columns: 20% 64% 13%;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+.addGroupSelect {
+  min-width: 100%;
+}
+
+.elementChipDiv {
+  display: flex;
+  flex-wrap: wrap;
 }

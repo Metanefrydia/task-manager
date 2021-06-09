@@ -16,8 +16,7 @@
 
 .paperStyle {
   min-height: 35vh;
-  min-width: 385px;
-  width: 50vw;
+  min-width: 40vw;
   outline-color: blue;
   border: #c8c8c8 4px solid;
   padding-top: 0.5%;

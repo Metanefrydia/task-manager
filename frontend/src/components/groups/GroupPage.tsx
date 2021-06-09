@@ -2,32 +2,31 @@ import React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import GroupCard from "./GroupCard";
 import { useEffect, useState } from "react";
-import AuthenticationService from "../../services/service";
+import GroupService from "../../services/GroupsService";
 
 interface RouteParams {
   id: string;
 }
 
-interface GroupPage extends RouteComponentProps<RouteParams> {}
+interface GroupPageInterface extends RouteComponentProps<RouteParams> {}
 
-const GroupPage: React.FC<GroupPage> = (props) => {
+const GroupPage: React.FC<GroupPageInterface> = (props) => {
   const [groups, setGroups] = useState<any>();
   const [isLoading, setLoading] = useState(true);
 
-  const readGroups = () => {
-    let id: string = props.match.params.id;
-    AuthenticationService.getGroups(id).then((response) => {
-      console.log(response.data);
-      setGroups(response.data);
-      setLoading(false);
-    });
-  };
-
   useEffect(() => {
+    const readGroups = () => {
+      let id: string = props.match.params.id;
+      GroupService.getGroups(id).then((response) => {
+        setGroups(response.data);
+        setLoading(false);
+      });
+    };
+
     readGroups();
   }, []);
 
-  return <div>{!isLoading ? <GroupCard {...groups} /> : <p> NI MA </p>}</div>;
+  return <div>{!isLoading ? <GroupCard {...groups} /> : <p>Ładuję</p>}</div>;
 };
 
 export default GroupPage;

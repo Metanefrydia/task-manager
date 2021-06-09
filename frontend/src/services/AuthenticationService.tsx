@@ -23,7 +23,7 @@ class AuthenticationService {
     this.token = token;
   }
 
-  private getToken(): string {
+  public getToken(): string {
     if (!this.token) {
       this.token = localStorage.getItem("mean-token");
     }
@@ -71,30 +71,6 @@ class AuthenticationService {
       this.saveToken(response.data.token);
     }
     return response.data;
-  }
-
-  public async getGroups(userId: string) {
-    return axios.get(`/groups/${userId}`, {
-      headers: { Authorization: this.getToken() },
-    });
-  }
-
-  public async deleteGroup(groupId: string) {
-    await axios.delete(`/delete-group/${groupId}`, {
-      headers: { Authorization: this.getToken() },
-    });
-  }
-  public async addGroup(data: any) {
-    await axios.post(
-      "/add-group",
-      {
-        name: data.name,
-        members: data.members,
-      },
-      {
-        headers: { Authorization: this.getToken() },
-      }
-    );
   }
 
   public async getUsers() {

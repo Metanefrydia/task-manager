@@ -18,7 +18,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "../register/Register.css";
-import AuthenticationService from "../../services/service";
+import AuthenticationService from "../../services/AuthenticationService";
 
 interface State {
   password: string;

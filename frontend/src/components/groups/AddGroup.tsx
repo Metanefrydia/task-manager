@@ -4,7 +4,6 @@ import {
   Chip,
   IconButton,
   Input,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -12,20 +11,19 @@ import {
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import AddIcon from "@material-ui/icons/AddCircleOutline";
 import "./group.css";
-import AuthenticationService, { UserDetails } from "../../services/service";
-
-interface userSelect {
-  name: string | undefined;
-  _id: string | undefined;
-}
+import AuthenticationService, {
+  UserDetails,
+} from "../../services/AuthenticationService";
+import GroupService from "../../services/GroupsService";
 
 const AddGroup = (props: any) => {
-  const curentUser: UserDetails | null = AuthenticationService.getUserDetails();
+  const currentUser: UserDetails | null =
+    AuthenticationService.getUserDetails();
   const [name, setName] = useState({
     name: "",
   });
   // @ts-ignore
-  const [members, setMembers] = useState<UserDetails[]>([curentUser]);
+  const [members, setMembers] = useState<UserDetails[]>([currentUser]);
 
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +43,7 @@ const AddGroup = (props: any) => {
       }),
     };
 
-    AuthenticationService.addGroup(groupData);
+    GroupService.addGroup(groupData);
     window.location.reload();
   };
 
@@ -59,34 +57,21 @@ const AddGroup = (props: any) => {
   };
 
   return (
-    <Box
-      style={{
-        padding: "6px",
-        marginTop: "10px",
-        marginLeft: "4%",
-        marginRight: "4%",
-        border: "1px solid #DADADA ",
-      }}
-      display="flex"
-      justifyContent="space-between"
-    >
+    <Box className={"inRowElement"}>
       <TextField
-        id="grup-name"
-        label="nazwa"
+        label="Nazwa grupy..."
         variant="outlined"
-        placeholder="Nazwa grupy..."
+        placeholder="Nazwa"
         value={name.name}
         onChange={handleChange("name")}
       />
 
       <Select
-        labelId="demo-mutiple-chip-label"
-        id="demo-mutiple-chip"
         multiple
         value={members}
         onChange={handleMembers}
-        input={<Input id="select-multiple-chip" />}
-        required
+        input={<Input className={"addGroupSelect"} />}
+        variant="filled"
         renderValue={(selected) => (
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {(selected as UserDetails[]).map((value) => (
@@ -100,33 +85,27 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {props.users.map((user: any) => {
-          // @ts-ignore
-          if (user._id != curentUser._id) {
-            return (
-              <MenuItem key={user._id} value={user}>
-                {user.name}
-              </MenuItem>
-            );
-          }
-        })}
+        {
+          //TODO Warning o referencji z findDOMNode do poprawki
+          props.users.map((user: any) => {
+            // @ts-ignore
+            if (user._id !== currentUser._id) {
+              return (
+                <MenuItem key={user._id} value={user}>
+                  {user.name}
+                </MenuItem>
+              );
+            }
+          })
+        }
       </Select>
 
       <div>
-        <IconButton aria-label="delete">
-          <AddIcon
-            style={{ color: "#03A9F4" }}
-            fontSize="large"
-            onClick={onAdd}
-          />
+        <IconButton aria-label="delete" onClick={onAdd}>
+          <AddIcon style={{ color: "#03A9F4" }} fontSize="large" />
         </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon
-            style={{ color: "red" }}
-            fontSize="large"
-            type="submit"
-            onClick={props.cancelAdd}
-          />
+        <IconButton aria-label="delete" onClick={props.cancelAdd}>
+          <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />
         </IconButton>
       </div>
     </Box>
