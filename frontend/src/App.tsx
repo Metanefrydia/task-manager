@@ -13,6 +13,7 @@ interface Props {}
 
 export class App extends React.Component<Props, State> {
   render() {
+
     return (
       <div className="App">
         <BrowserRouter>
@@ -21,7 +22,7 @@ export class App extends React.Component<Props, State> {
             <PrivateRoute path="/" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
-            <Route path="/groups/:id" exact component={GroupPage} />
+            <PrivateRoute path="/groups/:id" component={GroupPage} exact />
             <Route path="*">
               <div> 404 Not Found</div>
             </Route>

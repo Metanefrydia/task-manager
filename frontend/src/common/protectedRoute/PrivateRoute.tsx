@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import AuthenticationService from "../../services/AuthenticationService";
 
 const PrivateRoute: React.FC<{
-  component: React.FC;
+  component: React.FC | any;
   path: string;
   exact: boolean;
 }> = (props) => {
