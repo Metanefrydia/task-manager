@@ -97,8 +97,6 @@ export default function BasicTable(props: { selectedDay: string }) {
     setState({ ...state, newTask: event.target.value });
   };
 
-  console.log("HALKO + " + props.selectedDay);
-
   return (
     <TableContainer className="table-main">
       <p
