@@ -13,7 +13,6 @@ interface Props {}
 
 export class App extends React.Component<Props, State> {
   render() {
-
     return (
       <div className="App">
         <BrowserRouter>
