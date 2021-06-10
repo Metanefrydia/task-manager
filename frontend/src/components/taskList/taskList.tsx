@@ -49,7 +49,7 @@ const rows = [
   createData("red", "Wypełnienie spisu ludności", "Marysia", "Wstrzymano"),
 ];
 
-export default function BasicTable() {
+export default function BasicTable(props: { selectedDay: string }) {
   const [state, setState] = React.useState({
     inProgressColor: {
       backgroundColor: "#FFEF62",
@@ -96,6 +96,8 @@ export default function BasicTable() {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, newTask: event.target.value });
   };
+
+  console.log("HALKO + " + props.selectedDay);
 
   return (
     <TableContainer className="table-main">

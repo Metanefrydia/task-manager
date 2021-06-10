@@ -80,13 +80,6 @@ export default function TableRowComponent(props: {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
 
-  const [menu, setMenu] = React.useState({
-    inProgress: "W trakcie",
-    done: "Wykonano",
-    toDo: "Do zrobienia",
-    paused: "Wstrzymano",
-  });
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -198,6 +191,7 @@ export default function TableRowComponent(props: {
               onChange={handleInput}
               onKeyPress={handleEnter}
               onKeyDown={handleEsc}
+              value={editState.taskName}
             ></TextField>
           </TableCell>
         ) : (

@@ -1,70 +1,12 @@
 .date-container {
   display: flex;
   justify-content: center;
+  width: 100%;
   margin: 10px 0 10px 0;
 }
 
-.datepicker-strip {
+.table-container {
   display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  width: max-content;
-  max-width: 75%;
-  overflow: hidden;
-  line-height: 1.5;
-  font-family: sans-serif;
-}
-
-.datepicker-button-previous,
-.datepicker-button-next {
-  border: none;
-  text-decoration: none;
-  background: #03a9f4;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  flex-shrink: 0;
-}
-
-.date-day-Item-selected {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  border: 2px solid #03a9f4;
-  color: #03a9f4;
-}
-
-.datepicker-date-day-Item:hover {
-  background-color: #03a9f4;
-  border: 2px solid transparent;
-  color: #fff;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-}
-
-.datepicker-month-label {
-  margin-left: 12px;
-  font-size: 24px;
-  color: #03a9f4;
-  font-style: normal;
-  text-align: left;
-}
-
-.datepicker-date-day-Item {
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  width: 45px;
-  height: 45px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 2px solid #fdfbfb; /* color: #e6545b; */
-  margin: 0 20px 0 20px;
+  justify-content: center;
+  margin: 10px 0 10px 0;
 }
