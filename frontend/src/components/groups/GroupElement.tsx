@@ -62,7 +62,6 @@ const GroupElement = (props: any) => {
       name: groupName.name,
       members: members,
     };
-    console.log(data);
     GroupService.editGroup(data);
     window.location.reload();
   };

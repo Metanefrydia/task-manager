@@ -7,9 +7,9 @@ const PrivateRoute: React.FC<{
   path: string;
   exact: boolean;
 }> = (props) => {
-  const condition = AuthenticationService.isLoggedIn();
+  const isUserLoggedIn = AuthenticationService.isLoggedIn();
 
-  return condition ? (
+  return isUserLoggedIn ? (
     <Route path={props.path} exact={props.exact} component={props.component} />
   ) : (
     <Redirect to="/login" />

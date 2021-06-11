@@ -8,7 +8,7 @@ import AuthenticationService from "../../services/AuthenticationService";
 
 const GroupCard = (props: any) => {
   const [users, setUsers] = useState<any>();
-  const [visable, setVisable] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
   const readUsers = () => {
@@ -29,11 +29,11 @@ const GroupCard = (props: any) => {
   };
 
   const cancelAdd = () => {
-    setVisable(false);
+    setVisible(false);
   };
 
   const onClick = () => {
-    setVisable(true);
+    setVisible(true);
   };
 
   if (!isLoading) {
@@ -99,7 +99,7 @@ const GroupCard = (props: any) => {
             <p>Brak grup</p>
           )}
 
-          {visable ? (
+          {visible ? (
             <AddGroup cancelAdd={() => cancelAdd()} users={users} />
           ) : null}
         </Card>
