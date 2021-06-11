@@ -7,47 +7,45 @@ module.exports.addGroup = async (req, res) => {
         const group = await Group.create(req.body);
 
         const users = await User.updateMany(
-            { _id: { $in: req.body.members } },
-            { $push: { groups: group._id } }
+            {_id: {$in: req.body.members}},
+            {$push: {groups: group._id}}
         );
 
         res.status(201).json({
-          status: "success",
-          data: { group: group, usersUpdated: users },
+            status: "success",
+            data: {group: group, usersUpdated: users},
         });
-      } catch (err) {
+    } catch (err) {
         res.status(400).json({
-          status: "error",
-          message: err,
+            status: "error",
+            message: err,
         });
-      }
+    }
 }
 
 module.exports.editGroup = async (req, res) => {
-    try{
+    try {
         const id = req.params.groupId;
         const groupData = req.body;
 
         const groupBefore = await Group.findById(id)
         const usersBefore = await User.updateMany(
-            { _id: { $in: groupBefore.members } },
-            { $pull: { groups: id } }
+            {_id: {$in: groupBefore.members}},
+            {$pull: {groups: id}}
         );
 
         const group = await Group.findByIdAndUpdate(id, groupData);
 
         const users = await User.updateMany(
-            { _id: { $in: req.body.members } },
-            { $push: { groups: group._id } }
+            {_id: {$in: req.body.members}},
+            {$push: {groups: group._id}}
         );
 
         res.status(201).json({
             status: "succes",
-            data: { group: group, users: users },
+            data: {group: group, users: users},
         })
-    }
-
-    catch(err){
+    } catch (err) {
         res.status(400).json({
             status: "error",
             message: err,
@@ -57,21 +55,19 @@ module.exports.editGroup = async (req, res) => {
 }
 
 module.exports.getGroups = async (req, res) => {
-    try{
+    try {
 
         const id = req.params.userId;
 
         const membership = await Group.find(
             {members: id}
-            )
+        )
 
         res.status(201).json({
-           status: "succes",
+            status: "succes",
             data: membership,
         });
-    }
-
-    catch (err){
+    } catch (err) {
         res.status(400).json({
             status: "error",
             message: err,
@@ -80,15 +76,15 @@ module.exports.getGroups = async (req, res) => {
     }
 }
 
-module.exports.deleteGroup = async (req,res) => {
-    try{
+module.exports.deleteGroup = async (req, res) => {
+    try {
 
         const id = req.params.groupId;
 
         const groupBefore = await Group.findById(id)
         const usersBefore = await User.updateMany(
-            { _id: { $in: groupBefore.members } },
-            { $pull: { groups: id } }
+            {_id: {$in: groupBefore.members}},
+            {$pull: {groups: id}}
         );
 
         const group = await Group.findByIdAndDelete(
@@ -98,9 +94,7 @@ module.exports.deleteGroup = async (req,res) => {
         res.status(201).json({
             status: "succes",
         });
-    }
-
-    catch (err){
+    } catch (err) {
         res.status(400).json({
             status: "error",
             message: err,

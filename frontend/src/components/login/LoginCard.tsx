@@ -18,7 +18,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "../register/Register.css";
-import AuthenticationService from "../../services/service";
+import AuthenticationService from "../../services/AuthenticationService";
 
 interface State {
   password: string;
@@ -128,7 +128,7 @@ const LoginCard = () => {
           display="flex"
           justifyContent="flex-start"
         >
-          <p className="register-text">Zaloguj się</p>
+          <p className="title-text">Zaloguj się</p>
         </Box>
         <CardContent>
           <form method="POST" onSubmit={handleLogin}>

@@ -23,7 +23,7 @@ class AuthenticationService {
     this.token = token;
   }
 
-  private getToken(): string {
+  public getToken(): string {
     if (!this.token) {
       this.token = localStorage.getItem("mean-token");
     }
@@ -71,6 +71,10 @@ class AuthenticationService {
       this.saveToken(response.data.token);
     }
     return response.data;
+  }
+
+  public async getUsers() {
+    return axios.get("/users");
   }
 }
 
