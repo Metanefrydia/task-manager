@@ -6,6 +6,7 @@ import {
   Collapse,
   IconButton,
   ListItemText,
+  TextField,
   Typography,
   withStyles,
 } from "@material-ui/core";
@@ -69,16 +70,15 @@ export default function TableRowComponent(props: {
     person: props.person,
   });
 
+  const [editState, setEditState] = React.useState({
+    taskNameClicked: false,
+    editted: false,
+    taskName: props.name,
+  });
+
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
-
-  const [menu, setMenu] = React.useState({
-    inProgress: "W trakcie",
-    done: "Wykonano",
-    toDo: "Do zrobienia",
-    paused: "Wstrzymano",
-  });
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -148,6 +148,27 @@ export default function TableRowComponent(props: {
     }
   };
 
+  const handleNameClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (!editState.taskNameClicked) {
+      setEditState({ ...editState, taskNameClicked: true });
+    }
+  };
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditState({ ...editState, taskName: event.target.value });
+  };
+
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setEditState({ ...editState, editted: true, taskNameClicked: false });
+    }
+  };
+
+  const handleEsc = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") {
+      setEditState({ ...editState, editted: true, taskNameClicked: false });
+    }
+  };
   return (
     <>
       <TableRow className="row">
@@ -160,9 +181,30 @@ export default function TableRowComponent(props: {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell id={"name"} className="task-text" component="th" scope="row">
-          {props.name}
-        </TableCell>
+
+        {editState.taskNameClicked ? (
+          <TableCell onClick={handleNameClick}>
+            <TextField
+              id={"change-name-field"}
+              autoFocus={true}
+              style={{ width: "100%" }}
+              onChange={handleInput}
+              onKeyPress={handleEnter}
+              onKeyDown={handleEsc}
+              value={editState.taskName}
+            ></TextField>
+          </TableCell>
+        ) : (
+          <TableCell
+            id={"name"}
+            className="task-text"
+            component="th"
+            scope="row"
+            onClick={handleNameClick}
+          >
+            {editState.taskName}
+          </TableCell>
+        )}
 
         <TableCell id={"person"} className="person-text" align="center">
           <Button

@@ -49,7 +49,7 @@ const rows = [
   createData("red", "Wypełnienie spisu ludności", "Marysia", "Wstrzymano"),
 ];
 
-export default function BasicTable() {
+export default function BasicTable(props: { selectedDay: string }) {
   const [state, setState] = React.useState({
     inProgressColor: {
       backgroundColor: "#FFEF62",
