@@ -57,12 +57,16 @@ const GroupElement = (props: any) => {
   };
 
   const onEditGroup = () => {
-    const data = {
-      _id: props.group._id,
-      name: groupName.name,
-      members: members,
-    };
-    GroupService.editGroup(data);
+    if (members.length === 0) {
+      GroupService.deleteGroup(props.group._id);
+    } else {
+      const data = {
+        _id: props.group._id,
+        name: groupName.name,
+        members: members,
+      };
+      GroupService.editGroup(data);
+    }
     window.location.reload();
   };
 

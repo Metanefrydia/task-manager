@@ -13,12 +13,12 @@ class GroupsService {
       headers: { Authorization: AuthenticationService.getToken() },
     });
   }
-  public async addGroup(data: any) {
+  public async addGroup(groupData: any) {
     await axios.post(
       "/add-group",
       {
-        name: data.name,
-        members: data.members,
+        name: groupData.name,
+        members: groupData.members,
       },
       {
         headers: { Authorization: AuthenticationService.getToken() },
@@ -26,13 +26,13 @@ class GroupsService {
     );
   }
 
-  public async editGroup(data: any) {
+  public async editGroup(groupData: any) {
     await axios.put(
-      `/group/${data._id}`,
+      `/group/${groupData._id}`,
       {
-        _id: data._id,
-        name: data.name,
-        members: data.members,
+        _id: groupData._id,
+        name: groupData.name,
+        members: groupData.members,
       },
       {
         headers: { Authorization: AuthenticationService.getToken() },

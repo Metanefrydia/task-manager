@@ -12,12 +12,12 @@ import {
   Collapse,
   IconButton,
   TextField,
-  Typography,
   withStyles,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import TableRowComponent from "./taskListRow";
+import TaskService from "../../services/TaskService";
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -82,6 +82,14 @@ export default function BasicTable(props: { selectedDay: string }) {
 
   const [open, setOpen] = React.useState(false);
 
+  const [newTask, setNewTask] = React.useState({
+    title: "",
+    date: "2021-06-14", //TODO jak ustawić date Łukasz?
+    groupId: "60c4c2d0f60a5623b2cf253c", //TODO tu muszisz przekazać id grupy tego komponentu
+    assignee: "",
+    description: "",
+  });
+
   const handleAdding = (event: React.MouseEvent<HTMLElement>) => {
     setState({ ...state, editing: true });
   };
@@ -91,11 +99,30 @@ export default function BasicTable(props: { selectedDay: string }) {
       createData("red", state.newTask, "undefiend", "Do zrobienia")
     );
     setState({ ...state, editing: false });
+
+    const newTaskData = {
+      title: newTask.title,
+      date: newTask.date,
+      group: newTask.groupId,
+      description: newTask.description,
+    };
+    TaskService.addTask(newTaskData).then((response) => {
+      console.log(response);
+    });
+    window.location.reload();
+    //TODO nie wiem czy tu powinien być refresz
+    // czy inny sposób żeby załadować nowy task,
+    // jeżeli inny to trzeba jeszcze wyczyścić stan "newTask"
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, newTask: event.target.value });
   };
+
+  const handleNewTaskChange =
+    (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewTask({ ...newTask, [prop]: event.target.value });
+    };
 
   return (
     <TableContainer className="table-main">
@@ -164,7 +191,7 @@ export default function BasicTable(props: { selectedDay: string }) {
             </TableCell>
 
             <TableCell
-              id={"addCell"}
+              id="addCell"
               onClick={handleAdding}
               className="add-row-text"
             >
@@ -172,8 +199,9 @@ export default function BasicTable(props: { selectedDay: string }) {
                 <TextField
                   className="new-task-input"
                   id="standard-basic"
-                  placeholder={"Dodaj zadanie"}
-                  onChange={handleInput}
+                  placeholder="Dodaj zadanie"
+                  value={newTask.title}
+                  onChange={handleNewTaskChange("title")}
                 />
               ) : (
                 <div style={{ color: "#979797" }}>+ Dodaj</div>
@@ -203,12 +231,21 @@ export default function BasicTable(props: { selectedDay: string }) {
           </TableRow>
 
           <TableRow>
+            {
+              //TODO dąłbyś radę zrobić żeby ten texfield zajmował cały row
+              // z marginesami po prae px z obu stron?
+            }
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
               <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box margin={1}>
-                  <Typography variant="h5" gutterBottom component="div">
-                    Dodawanie tasku
-                  </Typography>
+                  <TextField
+                    multiline
+                    label="Opis"
+                    placeholder="Opis zadania..."
+                    value={newTask.description}
+                    onChange={handleNewTaskChange("description")}
+                    className={"description-input"}
+                  />
                 </Box>
               </Collapse>
             </TableCell>

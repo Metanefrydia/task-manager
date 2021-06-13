@@ -87,3 +87,7 @@
 .table-name {
   text-align: left;
 }
+
+.description-input {
+  width: 100%;
+}

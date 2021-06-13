@@ -90,6 +90,7 @@ const GroupCard = (props: any) => {
                 <GroupElement
                   key={group._id}
                   group={group}
+                  index={index}
                   deleteHandler={() => deleteGroup(index, group._id)}
                   users={users}
                 />
