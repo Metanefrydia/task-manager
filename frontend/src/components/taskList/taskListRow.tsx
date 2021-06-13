@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {
   Box,
@@ -19,6 +19,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import AuthenticationService, {UserDetails} from "../../services/AuthenticationService";
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -58,27 +59,44 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function TableRowComponent(props: {
-  name: string;
-  person: string;
-  status: string;
-  style: React.CSSProperties | undefined;
-}) {
+// export default function TableRowComponent(props: {
+//   name: string;
+//   person: string;
+//   status: string;
+//   style: React.CSSProperties | undefined;
+// }) {
+export default function TableRowComponent(props: any){
+  console.log("beginining =  " + JSON.stringify(props.group))
+  console.log("beginining =  " + JSON.stringify(props))
+
+
+
   const [buttonState, setButtonState] = React.useState({
     statusText: props.status,
     statusStyle: props.style,
-    person: props.person,
+    person: "undefined",
   });
 
   const [editState, setEditState] = React.useState({
     taskNameClicked: false,
     editted: false,
-    taskName: props.name,
+    taskName: props.title,
   });
+
 
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
+  const [users, setUsers] = React.useState();
+  const [isLoading, setLoading] = React.useState(true);
+  const [members, setMembers] = React.useState<string[]>([]);
+  // const [tasks, setTasks] = React.useState(
+  //     props.filter((group: any) => {
+  //       return props.group.includes(props.tableGroup)
+  //     })
+  // )
+
+
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -169,7 +187,48 @@ export default function TableRowComponent(props: {
       setEditState({ ...editState, editted: true, taskNameClicked: false });
     }
   };
+
+  useEffect( () => {
+    const getUserName = () => {
+      let membersArr: string[] = [];
+      let id: string = props.assignee;
+      AuthenticationService.getUsers().then((response) => {
+        console.log(response.data.data);
+        setUsers(response.data.data)
+
+
+        response.data.data.users.map((user: any) => {
+          // console.log(user);
+          if(user._id === props.assignee){
+            setButtonState({...buttonState, person: user.name})
+          }
+
+          props.tableGroup.members.map( (member: any) => {
+            console.log(member + ', ' + user._id)
+
+            if (user._id === member){
+              membersArr.push(user.name);
+              console.log('if ' + user.name)
+
+            }
+          });
+
+        });
+
+        setMembers(membersArr);
+
+        console.log(props.group);
+        setLoading(false);
+      })
+    }
+
+    getUserName();
+
+  }, [])
+
+
   return (
+      isLoading ? <div>ładowanie</div> :
     <>
       <TableRow className="row">
         <TableCell id={"color"} className="color-rec">
@@ -222,16 +281,23 @@ export default function TableRowComponent(props: {
             open={Boolean(anchorEl2)}
             onClose={handleClosePerson}
           >
-            <MenuItem id={"Andżej"} onClick={handlePersonMenuClick}>
-              Andżej
-            </MenuItem>
-            <MenuItem id={"Sebek"} onClick={handlePersonMenuClick}>
-              Sebek
-            </MenuItem>
-            <MenuItem id={"Karyna"} onClick={handlePersonMenuClick}>
-              Karyna
-            </MenuItem>
-          </Menu>
+
+
+            {
+              members.map((member: any) => <MenuItem id={member} onClick={handlePersonMenuClick}>
+              {member}
+            </MenuItem>)}
+
+                {/*<MenuItem id={"Andżej"} onClick={handlePersonMenuClick}>*/}
+                {/*  Andżej*/}
+                {/*</MenuItem>*/}
+                {/*<MenuItem id={"Sebek"} onClick={handlePersonMenuClick}>*/}
+                {/*  Sebek*/}
+                {/*</MenuItem>*/}
+                {/*<MenuItem id={"Karyna"} onClick={handlePersonMenuClick}>*/}
+                {/*  Karyna*/}
+                {/*</MenuItem>*/}
+              </Menu>
         </TableCell>
 
         <TableCell id={"status"} align="center">

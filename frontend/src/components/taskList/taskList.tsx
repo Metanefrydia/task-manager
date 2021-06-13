@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import MuiTableCell from "@material-ui/core/TableCell";
@@ -18,6 +18,28 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import TableRowComponent from "./taskListRow";
 import TaskService from "../../services/TaskService";
+
+class Task {
+  date:string;
+  description: string;
+  group: string;
+  status: string;
+  title: string;
+  _id: string;
+
+  constructor(date: string, description: string, group: string, status: string, title: string, id: string,){
+    this.date = date;
+    this.description = description;
+    this.group = group;
+    this.status = status;
+    this.title = title;
+    this._id = id;
+  }
+}
+
+interface Props{
+  taskList: Task[];
+}
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -49,7 +71,7 @@ const rows = [
   createData("red", "Wypełnienie spisu ludności", "Marysia", "Wstrzymano"),
 ];
 
-export default function BasicTable(props: { selectedDay: string }) {
+export default function BasicTable(props: any) {
   const [state, setState] = React.useState({
     inProgressColor: {
       backgroundColor: "#FFEF62",
@@ -124,6 +146,28 @@ export default function BasicTable(props: { selectedDay: string }) {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
 
+  // useEffect( () => {
+  //   console.log("TASK = " + JSON.stringify(props.taskList));
+  //   // console.log("TASK = " + props.taskList[0].title);
+  //   console.log("TASK G = " + JSON.stringify(props.group))
+  //   // console.log("TASK G = " + props.groups.data[0]._id)
+  //
+  // }, [props])
+
+  props.taskList.map( (task: any) => {
+    // console.log(task)
+  })
+
+  console.log("why" + props.taskList[0].group + ",  " + props.group._id)
+
+  const [tasks, setTasks] = useState(
+      props.taskList.filter((task : any) => {
+        return task.group === props.group._id;
+      })
+  )
+
+  console.log("PLMIMSKA DZIAŁJM" + tasks)
+
   return (
     <TableContainer className="table-main">
       <p
@@ -134,7 +178,7 @@ export default function BasicTable(props: { selectedDay: string }) {
           fontWeight: "bold",
         }}
       >
-        Rodzina
+        {props.group.name}
       </p>
       <Table className="table" aria-label="simple table">
         <TableHead>
@@ -158,13 +202,20 @@ export default function BasicTable(props: { selectedDay: string }) {
         </TableHead>
 
         <TableBody>
-          {state.rows.map((row) => {
+
+          {/*  props.taskList.map( (task: any) => {
+              console.log(task)
+           })*/}
+
+          {/*{state.rows.map((row) => {*/}
+          { tasks.map( (task: any) => {
+
             let style;
-            if (row.status === "W trakcie") {
+            if (task.status === "W trakcie") {
               style = state.inProgressColor;
-            } else if (row.status === "Wykonano") {
+            } else if (task.status === "Wykonano") {
               style = state.doneColor;
-            } else if (row.status === "Do zrobienia") {
+            } else if (task.status === "Do zrobienia") {
               style = state.toDoColor;
             } else {
               style = state.pausedColor;
@@ -172,8 +223,9 @@ export default function BasicTable(props: { selectedDay: string }) {
 
             return (
               <TableRowComponent
-                key={row.name}
-                {...row}
+                key={task.name}
+                {...task}
+                  tableGroup={props.group}
                 style={style}
               ></TableRowComponent>
             );
