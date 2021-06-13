@@ -18,7 +18,7 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-            <PrivateRoute path="/" component={HomePage} exact />
+            <PrivateRoute path="/:id" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
             <PrivateRoute path="/groups/:id" component={GroupPage} exact />
@@ -31,3 +31,11 @@ export class App extends React.Component<Props, State> {
     );
   }
 }
+
+const Home = () => {
+  return (
+    <div>
+      <h1>Task manager</h1>
+    </div>
+  );
+};

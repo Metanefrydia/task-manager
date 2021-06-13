@@ -66,8 +66,8 @@ const StyledMenuItem = withStyles((theme) => ({
 //   style: React.CSSProperties | undefined;
 // }) {
 export default function TableRowComponent(props: any){
-  console.log("beginining =  " + JSON.stringify(props.group))
-  console.log("beginining =  " + JSON.stringify(props))
+  // console.log("beginining =  " + JSON.stringify(props.group))
+  // console.log("beginining =  " + JSON.stringify(props))
 
 
 
@@ -193,7 +193,7 @@ export default function TableRowComponent(props: any){
       let membersArr: string[] = [];
       let id: string = props.assignee;
       AuthenticationService.getUsers().then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setUsers(response.data.data)
 
 
@@ -204,11 +204,11 @@ export default function TableRowComponent(props: any){
           }
 
           props.tableGroup.members.map( (member: any) => {
-            console.log(member + ', ' + user._id)
+            // console.log(member + ', ' + user._id)
 
             if (user._id === member){
               membersArr.push(user.name);
-              console.log('if ' + user.name)
+              // console.log('if ' + user.name)
 
             }
           });

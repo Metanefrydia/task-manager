@@ -86,7 +86,7 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   useEffect( () => {
      TaskService.getTasks(state.selectedDay).then((response) => {
        setTasks({...tasks, taskList: response.data.data, tasksLoaded: true})
-      // console.log(response.data.data)
+      console.log(JSON.stringify(response.data.data));
      })
         .catch(e => console.log(e));
   },[state]);
@@ -108,7 +108,7 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
 
       readGroups();
 
-  }, [state]);
+  }, [state, props.match.params.id]);
 
   // useEffect(() => {
   //   if (tasks.tasksLoaded && isLoading){
@@ -117,6 +117,8 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   // }, [isLoading])
 
   // console.log(tasks.tasksLoaded + " " + isLoading)
+
+  console.log(state.selectedDay)
 
   return (
     <div>

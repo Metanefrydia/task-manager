@@ -43,7 +43,7 @@ const Nav = () => {
           xs={8}
           style={{ paddingLeft: "25px" }}
         >
-          <Link to="/">
+          <Link to={`/${state.userId}`}>
             <img
               className="nav-logo"
               src={TaskManagerLogo}

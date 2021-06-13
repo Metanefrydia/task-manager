@@ -158,15 +158,21 @@ export default function BasicTable(props: any) {
     // console.log(task)
   })
 
-  console.log("why" + props.taskList[0].group + ",  " + props.group._id)
-
+  // console.log("why" + props.taskList[0].group + ",  " + props.group._id)
   const [tasks, setTasks] = useState(
       props.taskList.filter((task : any) => {
         return task.group === props.group._id;
       })
   )
 
-  console.log("PLMIMSKA DZIAŁJM" + tasks)
+  useEffect( () => {
+    setTasks(      props.taskList.filter((task : any) => {
+      return task.group === props.group._id;
+    }));
+  }, [props]);
+
+
+  // console.log("PLMIMSKA DZIAŁJM" + tasks)
 
   return (
     <TableContainer className="table-main">
