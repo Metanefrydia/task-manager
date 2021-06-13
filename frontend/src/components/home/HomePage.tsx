@@ -42,6 +42,7 @@ export class Task {
 }
 
 export default function HomePage(props: { match: { params: { id: string; }; }; }) {
+
   const monthEnum = {
     Jan: "01",
     Feb: "02",
@@ -81,6 +82,8 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   const selectDay = (day: any) => {
     const date = formatDate(String(day))
     setState({ ...state, selectedDay: date });
+    setLoaded(false);
+    setTasks({...tasks, tasksLoaded: false})
   };
 
   useEffect( () => {
@@ -119,7 +122,7 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   // console.log(tasks.tasksLoaded + " " + isLoading)
 
   console.log(state.selectedDay)
-
+  console.log(JSON.stringify(groups))
   return (
     <div>
       <div className="date-container">
@@ -132,9 +135,9 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
       </div>
       <div className="table-container">
 
-        {!(tasks.isLoading && isLoading) ? <div>WYKURWIAJ</div> :
-            // <div>jebac</div>
-            groups.data.map((group: any) => <TaskList {...tasks} group={group}/> )
+        {!(tasks.isLoading && isLoading) ? <div>ładowanie</div> :
+            groups.data.map((group: any) => <TaskList {...tasks} group={group}
+            date={state.selectedDay} /> )
 
         }
       </div>

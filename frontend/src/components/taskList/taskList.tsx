@@ -102,15 +102,28 @@ export default function BasicTable(props: any) {
     rows: rows,
   });
 
+  const [tasks, setTasks] = useState(
+      props.taskList.filter((task : any) => {
+        return task.group === props.group._id;
+      })
+  )
+
+  useEffect( () => {
+    setTasks(      props.taskList.filter((task : any) => {
+      return task.group === props.group._id;
+    }));
+  }, [props]);
+
   const [open, setOpen] = React.useState(false);
 
   const [newTask, setNewTask] = React.useState({
     title: "",
-    date: "2021-06-14", //TODO jak ustawić date Łukasz?
-    groupId: "60c4c2d0f60a5623b2cf253c", //TODO tu muszisz przekazać id grupy tego komponentu
-    assignee: "",
+    date: props.date,
+    groupId: props.group._id, //TODO tu muszisz przekazać id grupy tego komponentu
     description: "",
   });
+
+  console.log("data w liscie = " + props.date);
 
   const handleAdding = (event: React.MouseEvent<HTMLElement>) => {
     setState({ ...state, editing: true });
@@ -124,14 +137,17 @@ export default function BasicTable(props: any) {
 
     const newTaskData = {
       title: newTask.title,
-      date: newTask.date,
+      date: props.date,
       group: newTask.groupId,
       description: newTask.description,
+      status: "Do zrobienia",
     };
+
+    console.log("wysyłka" + newTask.date);
     TaskService.addTask(newTaskData).then((response) => {
       console.log(response);
     });
-    window.location.reload();
+    // window.location.reload();
     //TODO nie wiem czy tu powinien być refresz
     // czy inny sposób żeby załadować nowy task,
     // jeżeli inny to trzeba jeszcze wyczyścić stan "newTask"
@@ -146,33 +162,12 @@ export default function BasicTable(props: any) {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
 
-  // useEffect( () => {
-  //   console.log("TASK = " + JSON.stringify(props.taskList));
-  //   // console.log("TASK = " + props.taskList[0].title);
-  //   console.log("TASK G = " + JSON.stringify(props.group))
-  //   // console.log("TASK G = " + props.groups.data[0]._id)
-  //
-  // }, [props])
-
   props.taskList.map( (task: any) => {
     // console.log(task)
   })
 
-  // console.log("why" + props.taskList[0].group + ",  " + props.group._id)
-  const [tasks, setTasks] = useState(
-      props.taskList.filter((task : any) => {
-        return task.group === props.group._id;
-      })
-  )
 
-  useEffect( () => {
-    setTasks(      props.taskList.filter((task : any) => {
-      return task.group === props.group._id;
-    }));
-  }, [props]);
-
-
-  // console.log("PLMIMSKA DZIAŁJM" + tasks)
+  // console.log("PLMIMSKA DZIAŁJM + tasks)
 
   return (
     <TableContainer className="table-main">
@@ -292,6 +287,7 @@ export default function BasicTable(props: any) {
             {
               //TODO dąłbyś radę zrobić żeby ten texfield zajmował cały row
               // z marginesami po prae px z obu stron?
+            //    JUTRO
             }
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
               <Collapse in={open} timeout="auto" unmountOnExit>

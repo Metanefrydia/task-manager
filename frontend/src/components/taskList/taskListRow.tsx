@@ -20,6 +20,8 @@ import TableHead from "@material-ui/core/TableHead";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AuthenticationService, {UserDetails} from "../../services/AuthenticationService";
+import TaskService from "../../services/TaskService";
+
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -27,6 +29,20 @@ const TableCell = withStyles((theme) => ({
     padding: 3,
   },
 }))(MuiTableCell);
+
+interface Members {
+  members: Member[];
+}
+
+class Member{
+  name: string;
+  id: string;
+
+  constructor(name: string, id: string) {
+    this.name = name;
+    this.id = id;
+  }
+}
 
 const StyledMenu = withStyles({
   paper: {
@@ -66,15 +82,12 @@ const StyledMenuItem = withStyles((theme) => ({
 //   style: React.CSSProperties | undefined;
 // }) {
 export default function TableRowComponent(props: any){
-  // console.log("beginining =  " + JSON.stringify(props.group))
-  // console.log("beginining =  " + JSON.stringify(props))
-
-
 
   const [buttonState, setButtonState] = React.useState({
     statusText: props.status,
     statusStyle: props.style,
     person: "undefined",
+    personId: "",
   });
 
   const [editState, setEditState] = React.useState({
@@ -83,13 +96,23 @@ export default function TableRowComponent(props: any){
     taskName: props.title,
   });
 
+  const [editDescriptionState, setEditDescriptionState] = React.useState({
+    editted: false,
+    descriptionClicked: false,
+    description: props.description,
+  })
 
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [users, setUsers] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
-  const [members, setMembers] = React.useState<string[]>([]);
+  const [members, setMembers] = React.useState<Members>({
+    members: [] as Member[],
+      }
+  );
+  const [membersName, setMembersName] = React.useState<string[]>([]);
+
   // const [tasks, setTasks] = React.useState(
   //     props.filter((group: any) => {
   //       return props.group.includes(props.tableGroup)
@@ -115,7 +138,18 @@ export default function TableRowComponent(props: any){
   };
 
   const handlePersonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-    setButtonState({ ...buttonState, person: event.currentTarget.id });
+    // @ts-ignore
+    console.log("Handler = " + event.currentTarget.id)
+
+    // console.log("handler2 + " + members.id)
+    let id = "";
+    members.members.map((member) => {
+      if (member.name === event.currentTarget.id){
+        id = member.id;
+      }
+    });
+
+    setButtonState({ ...buttonState, person: event.currentTarget.id, personId: id});
   };
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -172,6 +206,13 @@ export default function TableRowComponent(props: any){
     }
   };
 
+  const handleDescriptionClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (!editDescriptionState.descriptionClicked){
+      setEditDescriptionState({...editDescriptionState, descriptionClicked: true})
+      console.log("puś mnie");
+    }
+  }
+
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditState({ ...editState, taskName: event.target.value });
   };
@@ -188,9 +229,27 @@ export default function TableRowComponent(props: any){
     }
   };
 
+  const handleDescriptionInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditDescriptionState({ ...editDescriptionState, description: event.target.value });
+  };
+
+  const handleDescriptionEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setEditDescriptionState({ ...editDescriptionState, editted: true, descriptionClicked: false });
+    }
+  };
+
+  const handleDescriptionEsc = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Escape") {
+      setEditDescriptionState({ ...editDescriptionState, editted: true, descriptionClicked: false });
+    }
+  };
+
   useEffect( () => {
     const getUserName = () => {
-      let membersArr: string[] = [];
+      let membersNameArr: string[] = [];
+      // let membersId: string[] = [];
+      let memberArr: Member[] = [];
       let id: string = props.assignee;
       AuthenticationService.getUsers().then((response) => {
         // console.log(response.data.data);
@@ -200,14 +259,17 @@ export default function TableRowComponent(props: any){
         response.data.data.users.map((user: any) => {
           // console.log(user);
           if(user._id === props.assignee){
-            setButtonState({...buttonState, person: user.name})
+            setButtonState({...buttonState, person: user.name, personId: user._id})
           }
 
           props.tableGroup.members.map( (member: any) => {
             // console.log(member + ', ' + user._id)
 
             if (user._id === member){
-              membersArr.push(user.name);
+              // membersArr.push(user.name);
+              // membersId.push(user._id);
+              memberArr.push(new Member(user.name, user._id));
+              membersNameArr.push(user.name);
               // console.log('if ' + user.name)
 
             }
@@ -215,7 +277,10 @@ export default function TableRowComponent(props: any){
 
         });
 
-        setMembers(membersArr);
+        setMembers({...members, members: memberArr});
+        setMembersName(membersNameArr);
+          // names:membersArr, id:membersId});
+        // setMembersId(membersId);
 
         console.log(props.group);
         setLoading(false);
@@ -226,6 +291,16 @@ export default function TableRowComponent(props: any){
 
   }, [])
 
+
+  useEffect( () => {
+      TaskService.editTask({
+        _id: props._id,
+        title: editState.taskName,
+        description: editDescriptionState.description,
+        status: buttonState.statusText,
+        assignee: buttonState.personId,
+      });
+  }, [editState.editted, editDescriptionState.editted])
 
   return (
       isLoading ? <div>ładowanie</div> :
@@ -281,10 +356,8 @@ export default function TableRowComponent(props: any){
             open={Boolean(anchorEl2)}
             onClose={handleClosePerson}
           >
-
-
             {
-              members.map((member: any) => <MenuItem id={member} onClick={handlePersonMenuClick}>
+              membersName.map((member: any) => <MenuItem id={member} onClick={handlePersonMenuClick}>
               {member}
             </MenuItem>)}
 
@@ -356,13 +429,34 @@ export default function TableRowComponent(props: any){
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h5" gutterBottom component="div">
-                Historyyy
-              </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Placeholder</TableCell>
+                    {editDescriptionState.descriptionClicked ?
+                            <TableCell onClick={handleNameClick}>
+                              <TextField
+                                  id={"change-description-field"}
+                                  autoFocus={true}
+                                  style={{ width: "100%" }}
+                                  onChange={handleDescriptionInput}
+                                  onKeyPress={handleDescriptionEnter}
+                                  onKeyDown={handleDescriptionEsc}
+                                  value={editDescriptionState.description}
+                              ></TextField>
+                            </TableCell>
+                             :
+                      <TableCell onClick={handleDescriptionClick}>
+                        {editDescriptionState.description}
+                        {/*  <TextField*/}
+                        {/*    multiline*/}
+                        {/*    label="Opis"*/}
+                        {/*    placeholder="Opis zadania..."*/}
+                        {/*    // value={newTask.description}*/}
+                        {/*    // onChange={handleNewTaskChange("description")}*/}
+                        {/*    className={"description-input"}*/}
+                        {/*/>*/}
+                      </TableCell>
+                    }
                   </TableRow>
                 </TableHead>
               </Table>
