@@ -148,6 +148,7 @@ export default function BasicTable(props: any) {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
 
+
   return (
     <TableContainer className="table-main">
       <p
@@ -269,9 +270,9 @@ export default function BasicTable(props: any) {
             }
             <TableCell style={{ paddingBottom: 0, paddingTop: 0,}} colSpan={5}>
               <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box margin={1} style={{width: "100%"}}>
+                <Box margin={1} style={{width: "99%"}}>
                   <TextField
-                      style={{width: "100%"}}
+                      style={{width: "99%"}}
                     multiline
                     label="Opis"
                     placeholder="Opis zadania..."

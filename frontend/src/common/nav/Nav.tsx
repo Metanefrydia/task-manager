@@ -60,12 +60,12 @@ const Nav = () => {
           xs={4}
           style={{ paddingRight: "25px" }}
         >
-          <div style={{ paddingTop: "5px" }}>
+          <div style={{ paddingTop: "5px"}}>
             {state.logged ? (
               <Button
                 variant="outlined"
                 color="secondary"
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: "20px",  height: "41px !important"  , padding: "5px 15px" }}
                 onClick={logOutHandle}
               >
                 <span className="btn-email-text btn-texts-login">
@@ -78,7 +78,7 @@ const Nav = () => {
                 color="secondary"
                 component={Link}
                 to="/login"
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: "20px", height: "41px !important"  , padding: "5px 15px"}}
               >
                 <span className="btn-email-text btn-texts-login">
                   zaloguj się

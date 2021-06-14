@@ -22,6 +22,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AuthenticationService, {UserDetails} from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
+import GroupService from "../../services/GroupsService";
 
 
 const TableCell = withStyles((theme) => ({
@@ -114,6 +115,10 @@ export default function TableRowComponent(props: any){
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const deleteTask = () => {
+    TaskService.deleteTask(props._id);
   };
 
   const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
@@ -289,7 +294,7 @@ export default function TableRowComponent(props: any){
   }, [editState.editted, editDescriptionState.editted, buttonState.person, buttonState.statusText])
 
   return (
-      isLoading ? <div></div> :
+      isLoading ? <div>ładowanie</div> :
     <>
       <TableRow className="row">
         <TableCell id={"color"} className="color-rec">
@@ -402,7 +407,7 @@ export default function TableRowComponent(props: any){
         </TableCell>
 
         <TableCell style={{width: "50px"}}>
-          <IconButton >
+          <IconButton onClick={deleteTask}>
             <DeleteIcon style={{ color: "red" }} fontSize={"small"}/>
           </IconButton>
         </TableCell>
