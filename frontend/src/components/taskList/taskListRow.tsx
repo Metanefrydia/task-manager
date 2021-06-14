@@ -21,6 +21,7 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import AuthenticationService, {UserDetails} from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
+import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 
 
 const TableCell = withStyles((theme) => ({
@@ -387,9 +388,17 @@ export default function TableRowComponent(props: any){
             </StyledMenu>
           </div>
         </TableCell>
+
+        <TableCell>
+          <IconButton >
+            <DeleteIcon style={{ color: "red" }} fontSize="large" />
+          </IconButton>
+        </TableCell>
+
+
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Table size="small" aria-label="purchases">
@@ -407,7 +416,9 @@ export default function TableRowComponent(props: any){
                                   value={editDescriptionState.description}
                                   placeholder={"Opis"}
                               ></TextField>
-                            </TableCell>
+
+                              </TableCell>
+
                              :
                       <TableCell onClick={handleDescriptionClick}>
                         {(editDescriptionState.description === "") ?

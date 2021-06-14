@@ -178,6 +178,10 @@ export default function BasicTable(props: any) {
             <TableCell className="head-text" align="center">
               Status
             </TableCell>
+
+            <TableCell>
+
+            </TableCell>
           </TableRow>
         </TableHead>
 
@@ -262,7 +266,7 @@ export default function BasicTable(props: any) {
               // z marginesami po prae px z obu stron?
             //    JUTRO
             }
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0,}} colSpan={3}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0,}} colSpan={5}>
               <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box margin={1} style={{width: "100%"}}>
                   <TextField
