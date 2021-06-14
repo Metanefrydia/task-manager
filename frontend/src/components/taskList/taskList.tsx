@@ -59,18 +59,6 @@ function createData(
   return { name, person, status };
 }
 
-const rows = [
-  createData("red", "Zakupy", "Tomek", "W trakcie"),
-  createData("red", "Pranie", "Oliwia", "Wykonano"),
-  createData(
-    "red",
-    "Wysłanie pocztówek na święta robie długiego stringa szalom",
-    "Karolek <3",
-    "Do zrobienia"
-  ),
-  createData("red", "Wypełnienie spisu ludności", "Marysia", "Wstrzymano"),
-];
-
 export default function BasicTable(props: any) {
   const [state, setState] = React.useState({
     inProgressColor: {
@@ -99,7 +87,6 @@ export default function BasicTable(props: any) {
     },
     editing: false,
     newTask: "",
-    rows: rows,
   });
 
   const [tasks, setTasks] = useState(
@@ -123,16 +110,14 @@ export default function BasicTable(props: any) {
     description: "",
   });
 
-  console.log("data w liscie = " + props.date);
-
   const handleAdding = (event: React.MouseEvent<HTMLElement>) => {
     setState({ ...state, editing: true });
   };
 
   const handleAddButton = (event: React.MouseEvent<HTMLElement>) => {
-    state.rows.push(
-      createData("red", state.newTask, "undefiend", "Do zrobienia")
-    );
+    // state.rows.push(
+    //   createData("red", state.newTask, "undefiend", "Do zrobienia")
+    // );
     setState({ ...state, editing: false });
 
     const newTaskData = {
@@ -143,9 +128,10 @@ export default function BasicTable(props: any) {
       status: "Do zrobienia",
     };
 
-    console.log("wysyłka" + newTask.date);
+    // console.log("wysyłka" + newTask.date);
     TaskService.addTask(newTaskData).then((response) => {
-      console.log(response);
+      // console.log(response);
+      //  constructor(date: string, description: string, group: string, status: string, title: string, id: string,){
     });
     // window.location.reload();
     //TODO nie wiem czy tu powinien być refresz
@@ -161,13 +147,6 @@ export default function BasicTable(props: any) {
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
-
-  props.taskList.map( (task: any) => {
-    // console.log(task)
-  })
-
-
-  // console.log("PLMIMSKA DZIAŁJM + tasks)
 
   return (
     <TableContainer className="table-main">
@@ -203,12 +182,6 @@ export default function BasicTable(props: any) {
         </TableHead>
 
         <TableBody>
-
-          {/*  props.taskList.map( (task: any) => {
-              console.log(task)
-           })*/}
-
-          {/*{state.rows.map((row) => {*/}
           { tasks.map( (task: any) => {
 
             let style;
@@ -283,16 +256,17 @@ export default function BasicTable(props: any) {
             </TableCell>
           </TableRow>
 
-          <TableRow>
+          <TableRow style={{width: "100%"}}>
             {
               //TODO dąłbyś radę zrobić żeby ten texfield zajmował cały row
               // z marginesami po prae px z obu stron?
             //    JUTRO
             }
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0,}} colSpan={3}>
               <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box margin={1}>
+                <Box margin={1} style={{width: "100%"}}>
                   <TextField
+                      style={{width: "100%"}}
                     multiline
                     label="Opis"
                     placeholder="Opis zadania..."

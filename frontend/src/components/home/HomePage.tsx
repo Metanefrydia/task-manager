@@ -89,7 +89,6 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   useEffect( () => {
      TaskService.getTasks(state.selectedDay).then((response) => {
        setTasks({...tasks, taskList: response.data.data, tasksLoaded: true})
-      console.log(JSON.stringify(response.data.data));
      })
         .catch(e => console.log(e));
   },[state]);
@@ -119,10 +118,6 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
   //   }
   // }, [isLoading])
 
-  // console.log(tasks.tasksLoaded + " " + isLoading)
-
-  console.log(state.selectedDay)
-  console.log(JSON.stringify(groups))
   return (
     <div>
       <div className="date-container">
@@ -136,7 +131,7 @@ export default function HomePage(props: { match: { params: { id: string; }; }; }
       <div className="table-container">
 
         {!(tasks.isLoading && isLoading) ? <div>ładowanie</div> :
-            groups.data.map((group: any) => <TaskList {...tasks} group={group}
+            groups.data.map((group: any) => <TaskList key={group.id} {...tasks} group={group}
             date={state.selectedDay} /> )
 
         }

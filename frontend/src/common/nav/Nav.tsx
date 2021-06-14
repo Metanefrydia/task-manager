@@ -22,6 +22,7 @@ const Nav = () => {
       userId: "",
     });
     AuthenticationService.logout();
+    window.location.href = "/login";
   };
 
   return (

@@ -73,7 +73,8 @@ const LoginCard = () => {
 
     AuthenticationService.login(token).then(
       () => {
-        window.location.href = "/";
+        let id = AuthenticationService.getUserDetails()?._id;
+        window.location.href = `/${id}`;
       },
       (error) => {
         const resMessage =
@@ -223,12 +224,12 @@ const LoginCard = () => {
               Zarejestruj się
             </Link>
           </p>
-          <p className="login-link-des">
-            Zapomniałeś hasła?{" "}
-            <Link to="#" className="login-link">
-              Przypomnij
-            </Link>
-          </p>
+          {/*<p className="login-link-des">*/}
+          {/*  Zapomniałeś hasła?{" "}*/}
+          {/*  <Link to="#" className="login-link">*/}
+          {/*    Przypomnij*/}
+          {/*  </Link>*/}
+          {/*</p>*/}
         </CardContent>
       </Card>
     </Grid>

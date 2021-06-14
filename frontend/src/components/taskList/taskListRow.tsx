@@ -75,18 +75,12 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-// export default function TableRowComponent(props: {
-//   name: string;
-//   person: string;
-//   status: string;
-//   style: React.CSSProperties | undefined;
-// }) {
 export default function TableRowComponent(props: any){
 
   const [buttonState, setButtonState] = React.useState({
     statusText: props.status,
     statusStyle: props.style,
-    person: "undefined",
+    person: "przypisz osobe",
     personId: "",
   });
 
@@ -113,14 +107,6 @@ export default function TableRowComponent(props: any){
   );
   const [membersName, setMembersName] = React.useState<string[]>([]);
 
-  // const [tasks, setTasks] = React.useState(
-  //     props.filter((group: any) => {
-  //       return props.group.includes(props.tableGroup)
-  //     })
-  // )
-
-
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -139,9 +125,6 @@ export default function TableRowComponent(props: any){
 
   const handlePersonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     // @ts-ignore
-    console.log("Handler = " + event.currentTarget.id)
-
-    // console.log("handler2 + " + members.id)
     let id = "";
     members.members.map((member) => {
       if (member.name === event.currentTarget.id){
@@ -252,26 +235,19 @@ export default function TableRowComponent(props: any){
       let memberArr: Member[] = [];
       let id: string = props.assignee;
       AuthenticationService.getUsers().then((response) => {
-        // console.log(response.data.data);
         setUsers(response.data.data)
 
 
         response.data.data.users.map((user: any) => {
-          // console.log(user);
           if(user._id === props.assignee){
             setButtonState({...buttonState, person: user.name, personId: user._id})
           }
 
           props.tableGroup.members.map( (member: any) => {
-            // console.log(member + ', ' + user._id)
 
             if (user._id === member){
-              // membersArr.push(user.name);
-              // membersId.push(user._id);
               memberArr.push(new Member(user.name, user._id));
               membersNameArr.push(user.name);
-              // console.log('if ' + user.name)
-
             }
           });
 
@@ -279,10 +255,7 @@ export default function TableRowComponent(props: any){
 
         setMembers({...members, members: memberArr});
         setMembersName(membersNameArr);
-          // names:membersArr, id:membersId});
-        // setMembersId(membersId);
 
-        console.log(props.group);
         setLoading(false);
       })
     }
@@ -300,7 +273,7 @@ export default function TableRowComponent(props: any){
         status: buttonState.statusText,
         assignee: buttonState.personId,
       });
-  }, [editState.editted, editDescriptionState.editted])
+  }, [editState.editted, editDescriptionState.editted, buttonState.person, buttonState.statusText])
 
   return (
       isLoading ? <div>ładowanie</div> :
@@ -317,7 +290,7 @@ export default function TableRowComponent(props: any){
         </TableCell>
 
         {editState.taskNameClicked ? (
-          <TableCell onClick={handleNameClick}>
+          <TableCell onClick={handleNameClick} className="title-row">
             <TextField
               id={"change-name-field"}
               autoFocus={true}
@@ -342,12 +315,12 @@ export default function TableRowComponent(props: any){
 
         <TableCell id={"person"} className="person-text" align="center">
           <Button
-            style={{ width: "100%" }}
+            style={{ width: "50px" }}
             aria-controls="simple-menu"
             aria-haspopup="true"
             onClick={handleClickPerson}
           >
-            <span style={{ textTransform: "none" }}>{buttonState.person}</span>
+            <span style={{ textTransform: "none",}}>{buttonState.person}</span>
           </Button>
           <Menu
             id="simple-menu"
@@ -357,23 +330,13 @@ export default function TableRowComponent(props: any){
             onClose={handleClosePerson}
           >
             {
-              membersName.map((member: any) => <MenuItem id={member} onClick={handlePersonMenuClick}>
+              membersName.map((member: any) => <MenuItem id={member} key={member} onClick={handlePersonMenuClick}>
               {member}
             </MenuItem>)}
-
-                {/*<MenuItem id={"Andżej"} onClick={handlePersonMenuClick}>*/}
-                {/*  Andżej*/}
-                {/*</MenuItem>*/}
-                {/*<MenuItem id={"Sebek"} onClick={handlePersonMenuClick}>*/}
-                {/*  Sebek*/}
-                {/*</MenuItem>*/}
-                {/*<MenuItem id={"Karyna"} onClick={handlePersonMenuClick}>*/}
-                {/*  Karyna*/}
-                {/*</MenuItem>*/}
               </Menu>
         </TableCell>
 
-        <TableCell id={"status"} align="center">
+        <TableCell id={"status"} className="status-row" align="center">
           <div>
             <Button
               id={"menuButton"}
@@ -442,19 +405,14 @@ export default function TableRowComponent(props: any){
                                   onKeyPress={handleDescriptionEnter}
                                   onKeyDown={handleDescriptionEsc}
                                   value={editDescriptionState.description}
+                                  placeholder={"Opis"}
                               ></TextField>
                             </TableCell>
                              :
                       <TableCell onClick={handleDescriptionClick}>
-                        {editDescriptionState.description}
-                        {/*  <TextField*/}
-                        {/*    multiline*/}
-                        {/*    label="Opis"*/}
-                        {/*    placeholder="Opis zadania..."*/}
-                        {/*    // value={newTask.description}*/}
-                        {/*    // onChange={handleNewTaskChange("description")}*/}
-                        {/*    className={"description-input"}*/}
-                        {/*/>*/}
+                        {(editDescriptionState.description === "") ?
+                        "Dodaj opis" : editDescriptionState.description}
+
                       </TableCell>
                     }
                   </TableRow>
