@@ -267,6 +267,16 @@ export default function TableRowComponent(props: any){
 
 
   useEffect( () => {
+    if (!isLoading && buttonState.personId === "") {
+      TaskService.editTask({
+        _id: props._id,
+        title: editState.taskName,
+        description: editDescriptionState.description,
+        status: buttonState.statusText,
+      });
+    }
+
+    else if (!isLoading) {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
@@ -274,10 +284,12 @@ export default function TableRowComponent(props: any){
         status: buttonState.statusText,
         assignee: buttonState.personId,
       });
+    }
+
   }, [editState.editted, editDescriptionState.editted, buttonState.person, buttonState.statusText])
 
   return (
-      isLoading ? <div>ładowanie</div> :
+      isLoading ? <div></div> :
     <>
       <TableRow className="row">
         <TableCell id={"color"} className="color-rec">
@@ -389,9 +401,9 @@ export default function TableRowComponent(props: any){
           </div>
         </TableCell>
 
-        <TableCell>
+        <TableCell style={{width: "50px"}}>
           <IconButton >
-            <DeleteIcon style={{ color: "red" }} fontSize="large" />
+            <DeleteIcon style={{ color: "red" }} fontSize={"small"}/>
           </IconButton>
         </TableCell>
 

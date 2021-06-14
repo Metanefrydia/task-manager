@@ -258,6 +258,7 @@ export default function BasicTable(props: any) {
                 <div></div>
               )}
             </TableCell>
+            <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
           </TableRow>
 
           <TableRow style={{width: "100%"}}>
