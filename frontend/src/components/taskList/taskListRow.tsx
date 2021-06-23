@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {
   Box,
@@ -19,11 +19,12 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import AuthenticationService, {UserDetails} from "../../services/AuthenticationService";
+import AuthenticationService, {
+  UserDetails,
+} from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import GroupService from "../../services/GroupsService";
-
 
 const TableCell = withStyles((theme) => ({
   root: {
@@ -36,7 +37,7 @@ interface Members {
   members: Member[];
 }
 
-class Member{
+class Member {
   name: string;
   id: string;
 
@@ -77,8 +78,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function TableRowComponent(props: any){
-
+export default function TableRowComponent(props: any) {
   const [buttonState, setButtonState] = React.useState({
     statusText: props.status,
     statusStyle: props.style,
@@ -96,7 +96,7 @@ export default function TableRowComponent(props: any){
     editted: false,
     descriptionClicked: false,
     description: props.description,
-  })
+  });
 
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -105,8 +105,7 @@ export default function TableRowComponent(props: any){
   const [isLoading, setLoading] = React.useState(true);
   const [members, setMembers] = React.useState<Members>({
     members: [] as Member[],
-      }
-  );
+  });
   const [membersName, setMembersName] = React.useState<string[]>([]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -119,6 +118,7 @@ export default function TableRowComponent(props: any){
 
   const deleteTask = () => {
     TaskService.deleteTask(props._id);
+    props.handleDelete();
   };
 
   const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
@@ -133,12 +133,16 @@ export default function TableRowComponent(props: any){
     // @ts-ignore
     let id = "";
     members.members.map((member) => {
-      if (member.name === event.currentTarget.id){
+      if (member.name === event.currentTarget.id) {
         id = member.id;
       }
     });
 
-    setButtonState({ ...buttonState, person: event.currentTarget.id, personId: id});
+    setButtonState({
+      ...buttonState,
+      person: event.currentTarget.id,
+      personId: id,
+    });
   };
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -196,11 +200,14 @@ export default function TableRowComponent(props: any){
   };
 
   const handleDescriptionClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (!editDescriptionState.descriptionClicked){
-      setEditDescriptionState({...editDescriptionState, descriptionClicked: true})
+    if (!editDescriptionState.descriptionClicked) {
+      setEditDescriptionState({
+        ...editDescriptionState,
+        descriptionClicked: true,
+      });
       console.log("puś mnie");
     }
-  }
+  };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditState({ ...editState, taskName: event.target.value });
@@ -218,60 +225,76 @@ export default function TableRowComponent(props: any){
     }
   };
 
-  const handleDescriptionInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditDescriptionState({ ...editDescriptionState, description: event.target.value });
+  const handleDescriptionInput = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEditDescriptionState({
+      ...editDescriptionState,
+      description: event.target.value,
+    });
   };
 
-  const handleDescriptionEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleDescriptionEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === "Enter") {
-      setEditDescriptionState({ ...editDescriptionState, editted: true, descriptionClicked: false });
+      setEditDescriptionState({
+        ...editDescriptionState,
+        editted: true,
+        descriptionClicked: false,
+      });
     }
   };
 
-  const handleDescriptionEsc = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleDescriptionEsc = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === "Escape") {
-      setEditDescriptionState({ ...editDescriptionState, editted: true, descriptionClicked: false });
+      setEditDescriptionState({
+        ...editDescriptionState,
+        editted: true,
+        descriptionClicked: false,
+      });
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     const getUserName = () => {
       let membersNameArr: string[] = [];
       // let membersId: string[] = [];
       let memberArr: Member[] = [];
       let id: string = props.assignee;
       AuthenticationService.getUsers().then((response) => {
-        setUsers(response.data.data)
-
+        setUsers(response.data.data);
 
         response.data.data.users.map((user: any) => {
-          if(user._id === props.assignee){
-            setButtonState({...buttonState, person: user.name, personId: user._id})
+          if (user._id === props.assignee) {
+            setButtonState({
+              ...buttonState,
+              person: user.name,
+              personId: user._id,
+            });
           }
 
-          props.tableGroup.members.map( (member: any) => {
-
-            if (user._id === member){
+          props.tableGroup.members.map((member: any) => {
+            if (user._id === member) {
               memberArr.push(new Member(user.name, user._id));
               membersNameArr.push(user.name);
             }
           });
-
         });
 
-        setMembers({...members, members: memberArr});
+        setMembers({ ...members, members: memberArr });
         setMembersName(membersNameArr);
 
         setLoading(false);
-      })
-    }
+      });
+    };
 
     getUserName();
+  }, []);
 
-  }, [])
-
-
-  useEffect( () => {
+  useEffect(() => {
     if (!isLoading && buttonState.personId === "") {
       TaskService.editTask({
         _id: props._id,
@@ -279,9 +302,7 @@ export default function TableRowComponent(props: any){
         description: editDescriptionState.description,
         status: buttonState.statusText,
       });
-    }
-
-    else if (!isLoading) {
+    } else if (!isLoading) {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
@@ -290,14 +311,19 @@ export default function TableRowComponent(props: any){
         assignee: buttonState.personId,
       });
     }
+  }, [
+    editState.editted,
+    editDescriptionState.editted,
+    buttonState.person,
+    buttonState.statusText,
+  ]);
 
-  }, [editState.editted, editDescriptionState.editted, buttonState.person, buttonState.statusText])
-
-  return (
-      isLoading ? <div>ładowanie</div> :
+  return isLoading ? (
+    <div>ładowanie</div>
+  ) : (
     <>
       <TableRow className="row">
-        <TableCell id={"color"} className="color-rec">
+        <TableCell id={"color"} className="color-rec" style={{backgroundColor: props.color}}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -338,7 +364,7 @@ export default function TableRowComponent(props: any){
             aria-haspopup="true"
             onClick={handleClickPerson}
           >
-            <span style={{ textTransform: "none",}}>{buttonState.person}</span>
+            <span style={{ textTransform: "none" }}>{buttonState.person}</span>
           </Button>
           <Menu
             id="simple-menu"
@@ -347,11 +373,16 @@ export default function TableRowComponent(props: any){
             open={Boolean(anchorEl2)}
             onClose={handleClosePerson}
           >
-            {
-              membersName.map((member: any) => <MenuItem id={member} key={member} onClick={handlePersonMenuClick}>
-              {member}
-            </MenuItem>)}
-              </Menu>
+            {membersName.map((member: any) => (
+              <MenuItem
+                id={member}
+                key={member}
+                onClick={handlePersonMenuClick}
+              >
+                {member}
+              </MenuItem>
+            ))}
+          </Menu>
         </TableCell>
 
         <TableCell id={"status"} className="status-row" align="center">
@@ -406,13 +437,11 @@ export default function TableRowComponent(props: any){
           </div>
         </TableCell>
 
-        <TableCell style={{width: "50px"}}>
+        <TableCell style={{ width: "50px" }}>
           <IconButton onClick={deleteTask}>
-            <DeleteIcon style={{ color: "red" }} fontSize={"small"}/>
+            <DeleteIcon style={{ color: "red" }} fontSize={"small"} />
           </IconButton>
         </TableCell>
-
-
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
@@ -421,28 +450,26 @@ export default function TableRowComponent(props: any){
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    {editDescriptionState.descriptionClicked ?
-                            <TableCell onClick={handleNameClick}>
-                              <TextField
-                                  id={"change-description-field"}
-                                  autoFocus={true}
-                                  style={{ width: "100%" }}
-                                  onChange={handleDescriptionInput}
-                                  onKeyPress={handleDescriptionEnter}
-                                  onKeyDown={handleDescriptionEsc}
-                                  value={editDescriptionState.description}
-                                  placeholder={"Opis"}
-                              ></TextField>
-
-                              </TableCell>
-
-                             :
-                      <TableCell onClick={handleDescriptionClick}>
-                        {(editDescriptionState.description === "") ?
-                        "Dodaj opis" : editDescriptionState.description}
-
+                    {editDescriptionState.descriptionClicked ? (
+                      <TableCell onClick={handleNameClick}>
+                        <TextField
+                          id={"change-description-field"}
+                          autoFocus={true}
+                          style={{ width: "100%" }}
+                          onChange={handleDescriptionInput}
+                          onKeyPress={handleDescriptionEnter}
+                          onKeyDown={handleDescriptionEsc}
+                          value={editDescriptionState.description}
+                          placeholder={"Opis"}
+                        ></TextField>
                       </TableCell>
-                    }
+                    ) : (
+                      <TableCell onClick={handleDescriptionClick}>
+                        {editDescriptionState.description === ""
+                          ? "Dodaj opis"
+                          : editDescriptionState.description}
+                      </TableCell>
+                    )}
                   </TableRow>
                 </TableHead>
               </Table>

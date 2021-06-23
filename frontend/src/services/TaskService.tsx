@@ -23,7 +23,6 @@ class TaskService {
       assignee: taskData.assignee,
     };
 
-
     await axios.put(`/task/${taskData._id}`, editedTaskData, {
       headers: { Authorization: AuthenticationService.getToken() },
     });

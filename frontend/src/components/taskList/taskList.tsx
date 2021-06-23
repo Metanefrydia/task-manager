@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import MuiTableCell from "@material-ui/core/TableCell";
@@ -20,14 +20,21 @@ import TableRowComponent from "./taskListRow";
 import TaskService from "../../services/TaskService";
 
 class Task {
-  date:string;
+  date: string;
   description: string;
   group: string;
   status: string;
   title: string;
   _id: string;
 
-  constructor(date: string, description: string, group: string, status: string, title: string, id: string,){
+  constructor(
+    date: string,
+    description: string,
+    group: string,
+    status: string,
+    title: string,
+    id: string
+  ) {
     this.date = date;
     this.description = description;
     this.group = group;
@@ -37,8 +44,10 @@ class Task {
   }
 }
 
-interface Props{
+interface Tasks {
   taskList: Task[];
+  isLoading: boolean;
+  tasksLoaded: boolean;
 }
 
 const TableCell = withStyles((theme) => ({
@@ -89,24 +98,35 @@ export default function BasicTable(props: any) {
     newTask: "",
   });
 
-  const [tasks, setTasks] = useState(
-      props.taskList.filter((task : any) => {
-        return task.group === props.group._id;
-      })
-  )
+  const [tasks, setTasks] = React.useState<Tasks>({
+    taskList: [] as Task[],
+    isLoading: true,
+    tasksLoaded: false,
+  });
 
-  useEffect( () => {
-    setTasks(      props.taskList.filter((task : any) => {
-      return task.group === props.group._id;
-    }));
-  }, [props]);
+  const [isLoading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    TaskService.getTasks(props.day)
+      .then((response) => {
+        setTasks({
+          ...tasks,
+          taskList: response.data.data.filter((task: any) => {
+            return task.group === props.group._id;
+          }),
+          tasksLoaded: true,
+        });
+        setLoading(false);
+      })
+      .catch((e) => console.log(e));
+  }, [isLoading]);
 
   const [open, setOpen] = React.useState(false);
 
   const [newTask, setNewTask] = React.useState({
     title: "",
     date: props.date,
-    groupId: props.group._id, //TODO tu muszisz przekazać id grupy tego komponentu
+    groupId: props.group._id,
     description: "",
   });
 
@@ -115,9 +135,6 @@ export default function BasicTable(props: any) {
   };
 
   const handleAddButton = (event: React.MouseEvent<HTMLElement>) => {
-    // state.rows.push(
-    //   createData("red", state.newTask, "undefiend", "Do zrobienia")
-    // );
     setState({ ...state, editing: false });
 
     const newTaskData = {
@@ -128,33 +145,31 @@ export default function BasicTable(props: any) {
       status: "Do zrobienia",
     };
 
-    // console.log("wysyłka" + newTask.date);
     TaskService.addTask(newTaskData).then((response) => {
-      // console.log(response);
-      //  constructor(date: string, description: string, group: string, status: string, title: string, id: string,){
+      setNewTask({...newTask, title: ""});
+      setLoading(true);
     });
-    // window.location.reload();
-    //TODO nie wiem czy tu powinien być refresz
-    // czy inny sposób żeby załadować nowy task,
-    // jeżeli inny to trzeba jeszcze wyczyścić stan "newTask"
   };
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, newTask: event.target.value });
+  const handleDeleting = () => {
+    setLoading(true);
   };
+
+  // const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setState({ ...state, newTask: event.target.value });
+  // };
 
   const handleNewTaskChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
 
-
   return (
     <TableContainer className="table-main">
       <p
         style={{
           textAlign: "left",
-          color: "#f1503a",
+          color: props.color,
           fontSize: "24px",
           fontWeight: "bold",
         }}
@@ -180,15 +195,12 @@ export default function BasicTable(props: any) {
               Status
             </TableCell>
 
-            <TableCell>
-
-            </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          { tasks.map( (task: any) => {
-
+          {tasks.taskList.map((task: any) => {
             let style;
             if (task.status === "W trakcie") {
               style = state.inProgressColor;
@@ -204,14 +216,16 @@ export default function BasicTable(props: any) {
               <TableRowComponent
                 key={task.name}
                 {...task}
-                  tableGroup={props.group}
+                tableGroup={props.group}
+                color={props.color}
+                handleDelete={handleDeleting}
                 style={style}
               ></TableRowComponent>
             );
           })}
 
           <TableRow className="row">
-            <TableCell id={"color"} className="color-rec">
+            <TableCell id={"color"} className="color-rec" style={{backgroundColor: props.color}}>
               <IconButton
                 aria-label="expand row"
                 size="small"
@@ -262,17 +276,12 @@ export default function BasicTable(props: any) {
             <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
           </TableRow>
 
-          <TableRow style={{width: "100%"}}>
-            {
-              //TODO dąłbyś radę zrobić żeby ten texfield zajmował cały row
-              // z marginesami po prae px z obu stron?
-            //    JUTRO
-            }
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0,}} colSpan={5}>
+          <TableRow style={{ width: "100%" }}>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
               <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box margin={1} style={{width: "99%"}}>
+                <Box margin={1} style={{ width: "99%" }}>
                   <TextField
-                      style={{width: "99%"}}
+                    style={{ width: "99%" }}
                     multiline
                     label="Opis"
                     placeholder="Opis zadania..."
