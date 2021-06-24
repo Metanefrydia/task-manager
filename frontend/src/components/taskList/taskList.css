@@ -75,7 +75,19 @@
 }
 
 .status-row {
+  border-style: solid;
   width: 20%;
+  border-width: 0;
+  border-right-width: 1px;
+  border-color: #c8c8c8;
+}
+
+.delete-row {
+  border-style: solid;
+  width: 50px;
+  border-width: 0;
+  border-bottom-width: 100px;
+  border-color: #c8c8c8;
 }
 
 /*.title-row {*/

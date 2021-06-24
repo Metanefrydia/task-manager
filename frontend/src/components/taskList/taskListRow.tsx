@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TableRow from "@material-ui/core/TableRow";
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   IconButton,
   ListItemText,
   TextField,
-  Typography,
   withStyles,
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -19,14 +18,11 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import AuthenticationService, {
-  UserDetails,
-} from "../../services/AuthenticationService";
+import AuthenticationService from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
-import GroupService from "../../services/GroupsService";
 
-const TableCell = withStyles((theme) => ({
+const TableCell = withStyles(() => ({
   root: {
     height: 10,
     padding: 3,
@@ -117,8 +113,7 @@ export default function TableRowComponent(props: any) {
   };
 
   const deleteTask = () => {
-    TaskService.deleteTask(props._id);
-    props.handleDelete();
+    TaskService.deleteTask(props._id).then(() => props.handleDelete());
   };
 
   const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
@@ -143,6 +138,7 @@ export default function TableRowComponent(props: any) {
       person: event.currentTarget.id,
       personId: id,
     });
+    handleClosePerson();
   };
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -157,6 +153,7 @@ export default function TableRowComponent(props: any) {
           color: "black",
         },
       });
+      handleClose();
     } else if (event.currentTarget.id === "2") {
       setButtonState({
         ...buttonState,
@@ -168,6 +165,7 @@ export default function TableRowComponent(props: any) {
           color: "black",
         },
       });
+      handleClose();
     } else if (event.currentTarget.id === "3") {
       setButtonState({
         ...buttonState,
@@ -179,6 +177,7 @@ export default function TableRowComponent(props: any) {
           color: "black",
         },
       });
+      handleClose();
     } else {
       setButtonState({
         ...buttonState,
@@ -190,6 +189,7 @@ export default function TableRowComponent(props: any) {
           color: "black",
         },
       });
+      handleClose();
     }
   };
 
@@ -205,7 +205,6 @@ export default function TableRowComponent(props: any) {
         ...editDescriptionState,
         descriptionClicked: true,
       });
-      console.log("puś mnie");
     }
   };
 
@@ -261,9 +260,7 @@ export default function TableRowComponent(props: any) {
   useEffect(() => {
     const getUserName = () => {
       let membersNameArr: string[] = [];
-      // let membersId: string[] = [];
       let memberArr: Member[] = [];
-      let id: string = props.assignee;
       AuthenticationService.getUsers().then((response) => {
         setUsers(response.data.data);
 
@@ -323,7 +320,11 @@ export default function TableRowComponent(props: any) {
   ) : (
     <>
       <TableRow className="row">
-        <TableCell id={"color"} className="color-rec" style={{backgroundColor: props.color}}>
+        <TableCell
+          id={"color"}
+          className="color-rec"
+          style={{ backgroundColor: props.color }}
+        >
           <IconButton
             aria-label="expand row"
             size="small"
@@ -437,7 +438,7 @@ export default function TableRowComponent(props: any) {
           </div>
         </TableCell>
 
-        <TableCell style={{ width: "50px" }}>
+        <TableCell className="delete-row">
           <IconButton onClick={deleteTask}>
             <DeleteIcon style={{ color: "red" }} fontSize={"small"} />
           </IconButton>

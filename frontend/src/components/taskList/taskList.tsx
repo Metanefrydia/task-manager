@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import MuiTableCell from "@material-ui/core/TableCell";
@@ -50,7 +50,7 @@ interface Tasks {
   tasksLoaded: boolean;
 }
 
-const TableCell = withStyles((theme) => ({
+const TableCell = withStyles(() => ({
   root: {
     height: 10,
     padding: 3,
@@ -58,15 +58,6 @@ const TableCell = withStyles((theme) => ({
     borderTop: "1px",
   },
 }))(MuiTableCell);
-
-function createData(
-  color: string,
-  name: string,
-  person: string,
-  status: string
-) {
-  return { name, person, status };
-}
 
 export default function BasicTable(props: any) {
   const [state, setState] = React.useState({
@@ -145,8 +136,8 @@ export default function BasicTable(props: any) {
       status: "Do zrobienia",
     };
 
-    TaskService.addTask(newTaskData).then((response) => {
-      setNewTask({...newTask, title: ""});
+    TaskService.addTask(newTaskData).then(() => {
+      setNewTask({ ...newTask, title: "" });
       setLoading(true);
     });
   };
@@ -155,146 +146,152 @@ export default function BasicTable(props: any) {
     setLoading(true);
   };
 
-  // const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setState({ ...state, newTask: event.target.value });
-  // };
-
   const handleNewTaskChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewTask({ ...newTask, [prop]: event.target.value });
     };
 
-  return (
-    <TableContainer className="table-main">
-      <p
-        style={{
-          textAlign: "left",
-          color: props.color,
-          fontSize: "24px",
-          fontWeight: "bold",
-        }}
-      >
-        {props.group.name}
-      </p>
-      <Table className="table" aria-label="simple table">
-        <TableHead>
-          <TableRow
-            style={{
-              height: "auto !important",
-              borderTop: "10px",
-              borderColor: "yellow",
-            }}
-          >
-            {/* cell z kolorkiem */}
-            <TableCell className="color-rec-head"></TableCell>
-            <TableCell></TableCell>
-            <TableCell className="head-text" align="center">
-              Osoba
-            </TableCell>
-            <TableCell className="head-text" align="center">
-              Status
-            </TableCell>
-
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {tasks.taskList.map((task: any) => {
-            let style;
-            if (task.status === "W trakcie") {
-              style = state.inProgressColor;
-            } else if (task.status === "Wykonano") {
-              style = state.doneColor;
-            } else if (task.status === "Do zrobienia") {
-              style = state.toDoColor;
-            } else {
-              style = state.pausedColor;
-            }
-
-            return (
-              <TableRowComponent
-                key={task.name}
-                {...task}
-                tableGroup={props.group}
-                color={props.color}
-                handleDelete={handleDeleting}
-                style={style}
-              ></TableRowComponent>
-            );
-          })}
-
-          <TableRow className="row">
-            <TableCell id={"color"} className="color-rec" style={{backgroundColor: props.color}}>
-              <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setOpen(!open)}
-              >
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </TableCell>
-
-            <TableCell
-              id="addCell"
-              onClick={handleAdding}
-              className="add-row-text"
+  if (isLoading) {
+    return <div></div>;
+  } else {
+    return (
+      <TableContainer className="table-main">
+        <p
+          style={{
+            textAlign: "left",
+            color: props.color,
+            fontSize: "24px",
+            fontWeight: "bold",
+          }}
+        >
+          {props.group.name}
+        </p>
+        <Table className="table" aria-label="simple table">
+          <TableHead>
+            <TableRow
+              style={{
+                height: "auto !important",
+                borderTop: "10px",
+                borderColor: "yellow",
+              }}
             >
-              {state.editing ? (
-                <TextField
-                  className="new-task-input"
-                  id="standard-basic"
-                  placeholder="Dodaj zadanie"
-                  value={newTask.title}
-                  onChange={handleNewTaskChange("title")}
-                />
-              ) : (
-                <div style={{ color: "#979797" }}>+ Dodaj</div>
-              )}
-            </TableCell>
+              <TableCell className="color-rec-head"></TableCell>
+              <TableCell></TableCell>
+              <TableCell className="head-text" align="center">
+                Osoba
+              </TableCell>
+              <TableCell className="head-text" align="center">
+                Status
+              </TableCell>
 
-            <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
-            <TableCell className="add-row-text">
-              {state.editing ? (
-                <div className="button-div">
-                  <Button
-                    id={"menuButton"}
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                    color="primary"
-                    style={{ width: "100%", backgroundColor: "#03A9F4" }}
-                    onClick={handleAddButton}
-                  >
-                    DODAJ
-                  </Button>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </TableCell>
-            <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
-          </TableRow>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
 
-          <TableRow style={{ width: "100%" }}>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box margin={1} style={{ width: "99%" }}>
+          <TableBody>
+            {tasks.taskList.map((task: any) => {
+              let style;
+              if (task.status === "W trakcie") {
+                style = state.inProgressColor;
+              } else if (task.status === "Wykonano") {
+                style = state.doneColor;
+              } else if (task.status === "Do zrobienia") {
+                style = state.toDoColor;
+              } else {
+                style = state.pausedColor;
+              }
+
+              return (
+                <TableRowComponent
+                  key={task.name}
+                  {...task}
+                  tableGroup={props.group}
+                  color={props.color}
+                  handleDelete={handleDeleting}
+                  style={style}
+                ></TableRowComponent>
+              );
+            })}
+
+            <TableRow className="row">
+              <TableCell
+                id={"color"}
+                className="color-rec"
+                style={{ backgroundColor: props.color }}
+              >
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                >
+                  {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                </IconButton>
+              </TableCell>
+
+              <TableCell
+                id="addCell"
+                onClick={handleAdding}
+                className="add-row-text"
+              >
+                {state.editing ? (
                   <TextField
-                    style={{ width: "99%" }}
-                    multiline
-                    label="Opis"
-                    placeholder="Opis zadania..."
-                    value={newTask.description}
-                    onChange={handleNewTaskChange("description")}
-                    className={"description-input"}
+                    className="new-task-input"
+                    id="standard-basic"
+                    placeholder="Dodaj zadanie"
+                    value={newTask.title}
+                    onChange={handleNewTaskChange("title")}
                   />
-                </Box>
-              </Collapse>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+                ) : (
+                  <div style={{ color: "#979797" }}>+ Dodaj</div>
+                )}
+              </TableCell>
+
+              <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
+              <TableCell className="add-row-text">
+                {state.editing ? (
+                  <div className="button-div">
+                    <Button
+                      id={"menuButton"}
+                      aria-controls="customized-menu"
+                      aria-haspopup="true"
+                      variant="contained"
+                      color="primary"
+                      style={{ width: "100%", backgroundColor: "#03A9F4" }}
+                      onClick={handleAddButton}
+                    >
+                      DODAJ
+                    </Button>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </TableCell>
+              <TableCell style={{ backgroundColor: "#EDEDED" }}></TableCell>
+            </TableRow>
+
+            <TableRow style={{ width: "100%" }}>
+              <TableCell
+                style={{ paddingBottom: 0, paddingTop: 0 }}
+                colSpan={5}
+              >
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Box margin={1} style={{ width: "99%" }}>
+                    <TextField
+                      style={{ width: "99%" }}
+                      multiline
+                      label="Opis"
+                      placeholder="Opis zadania..."
+                      value={newTask.description}
+                      onChange={handleNewTaskChange("description")}
+                      className={"description-input"}
+                    />
+                  </Box>
+                </Collapse>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  }
 }

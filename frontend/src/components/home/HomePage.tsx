@@ -27,15 +27,22 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
   };
 
   const colorsEnum = [
-    "#F1503A",
-    "#5D72E5",
-  ]
+    "#F44336",
+    "#E91E63",
+    "#9C27B0",
+    "#673AB7",
+    "#009688",
+    "#4CAF50",
+    "#CDDC39",
+    "#FFEB3B",
+    "#FFC107",
+    "#FF9800",
+  ];
 
   const formatDate = (date: string) => {
     const splits = date.split(" ");
     // @ts-ignore
-    const parsedDate = splits[3] + "-" + monthEnum[splits[1]] + "-" + splits[2];
-    return parsedDate;
+    return splits[3] + "-" + monthEnum[splits[1]] + "-" + splits[2];
   };
 
   const [state, setState] = React.useState<State>({
@@ -81,7 +88,7 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
             <TaskList
               key={group.id}
               day={state.selectedDay}
-              color={colorsEnum[idx % 2]}
+              color={colorsEnum[idx % 10]}
               group={group}
               date={state.selectedDay}
             />

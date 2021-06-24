@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import TaskManagerLogo from "../../images/TaskManagerLogo.png";
 import "./Nav.css";
 import { Button, Grid } from "@material-ui/core";
@@ -16,13 +17,15 @@ const Nav = () => {
     userId: AuthenticationService.getUserDetails()?._id,
   });
 
+  let history = useHistory();
+
   const logOutHandle = () => {
     setState({
       logged: false,
       userId: "",
     });
     AuthenticationService.logout();
-    window.location.href = "/login";
+    history.push("/login");
   };
 
   return (
@@ -65,11 +68,7 @@ const Nav = () => {
               <Button
                 variant="outlined"
                 color="secondary"
-                style={{
-                  marginRight: "20px",
-                  height: "41px !important",
-                  padding: "5px 15px",
-                }}
+                className="button-style"
                 onClick={logOutHandle}
               >
                 <span className="btn-email-text btn-texts-login">
@@ -82,11 +81,7 @@ const Nav = () => {
                 color="secondary"
                 component={Link}
                 to="/login"
-                style={{
-                  marginRight: "20px",
-                  height: "41px !important",
-                  padding: "5px 15px",
-                }}
+                className="button-style"
               >
                 <span className="btn-email-text btn-texts-login">
                   zaloguj się
