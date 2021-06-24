@@ -86,7 +86,7 @@ const AddGroup = (props: any) => {
         MenuProps={MenuProps}
       >
         {
-          //TODO Warning o referencji z findDOMNode do poprawki
+          // eslint-disable-next-line array-callback-return
           props.users.map((user: any) => {
             // @ts-ignore
             if (user._id !== currentUser._id) {

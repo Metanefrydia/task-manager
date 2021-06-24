@@ -97,7 +97,7 @@ export default function TableRowComponent(props: any) {
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
-  const [users, setUsers] = React.useState();
+  const [, setUsers] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
   const [members, setMembers] = React.useState<Members>({
     members: [] as Member[],
@@ -125,13 +125,10 @@ export default function TableRowComponent(props: any) {
   };
 
   const handlePersonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-    // @ts-ignore
     let id = "";
-    members.members.map((member) => {
-      if (member.name === event.currentTarget.id) {
-        id = member.id;
-      }
-    });
+    members.members
+      .filter((member) => member.name === event.currentTarget.id)
+      .map((member) => (id = member.id));
 
     setButtonState({
       ...buttonState,
@@ -276,6 +273,7 @@ export default function TableRowComponent(props: any) {
       AuthenticationService.getUsers().then((response) => {
         setUsers(response.data.data);
 
+        // eslint-disable-next-line array-callback-return
         response.data.data.users.map((user: any) => {
           if (user._id === props.assignee) {
             setButtonState({
@@ -285,6 +283,7 @@ export default function TableRowComponent(props: any) {
             });
           }
 
+          // eslint-disable-next-line array-callback-return
           props.tableGroup.members.map((member: any) => {
             if (user._id === member) {
               memberArr.push(new Member(user.name, user._id));
@@ -301,6 +300,7 @@ export default function TableRowComponent(props: any) {
     };
 
     getUserName();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -320,6 +320,7 @@ export default function TableRowComponent(props: any) {
         assignee: buttonState.personId,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     editState.editted,
     editDescriptionState.editted,
@@ -328,7 +329,9 @@ export default function TableRowComponent(props: any) {
   ]);
 
   return isLoading ? (
-    <div>ładowanie</div>
+    <TableRow>
+      <TableCell>ładowanie</TableCell>
+    </TableRow>
   ) : (
     <>
       <TableRow className="row">

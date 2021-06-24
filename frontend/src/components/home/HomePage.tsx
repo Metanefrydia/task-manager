@@ -86,7 +86,7 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
         ) : (
           groups.data.map((group: any, idx: number) => (
             <TaskList
-              key={group.id}
+              key={idx}
               day={state.selectedDay}
               color={colorsEnum[idx % 10]}
               group={group}
