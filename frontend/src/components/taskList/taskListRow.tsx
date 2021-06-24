@@ -273,8 +273,7 @@ export default function TableRowComponent(props: any) {
       AuthenticationService.getUsers().then((response) => {
         setUsers(response.data.data);
 
-        // eslint-disable-next-line array-callback-return
-        response.data.data.users.map((user: any) => {
+        response.data.data.users.forEach((user: any) => {
           if (user._id === props.assignee) {
             setButtonState({
               ...buttonState,
@@ -283,8 +282,7 @@ export default function TableRowComponent(props: any) {
             });
           }
 
-          // eslint-disable-next-line array-callback-return
-          props.tableGroup.members.map((member: any) => {
+          props.tableGroup.members.forEach((member: any) => {
             if (user._id === member) {
               memberArr.push(new Member(user.name, user._id));
               membersNameArr.push(user.name);
