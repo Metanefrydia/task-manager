@@ -24,7 +24,6 @@
   display: flex;
   min-width: 5px;
   width: 30px;
-  /*background-color: #f1503a;*/
   align-items: center;
   justify-content: center;
 }
@@ -89,10 +88,6 @@
   border-bottom-width: 100px;
   border-color: #c8c8c8;
 }
-
-/*.title-row {*/
-/*  width: 100%;*/
-/*}*/
 
 .row {
   padding: 10px !important;

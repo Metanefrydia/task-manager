@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./common/protectedRoute/PrivateRoute";
 import HomePage from "./components/home/HomePage";
 import GroupPage from "./components/groups/GroupPage";
-import WelcomePage from "./components/welcomePage/welcomePage";
 
 interface State {}
 interface Props {}
@@ -19,7 +18,6 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-            {/*<Route path="/undefined" exact component={WelcomePage} />*/}
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
             <PrivateRoute path="/groups/:id" component={GroupPage} exact />
@@ -33,11 +31,3 @@ export class App extends React.Component<Props, State> {
     );
   }
 }
-
-const Home = () => {
-  return (
-    <div>
-      <h1>Task manager</h1>
-    </div>
-  );
-};
