@@ -89,16 +89,19 @@ const Nav = () => {
               </Button>
             )}
           </div>
-          <Button
-            variant="contained"
-            color="secondary"
-            component={Link}
-            to={state.logged ? `/groups/${state.userId}` : "/signup"}
-          >
-            <span className="btn-signup-text btn-texts-login">
-              {state.logged ? "twoje zespoły" : "zarejestruj się"}
-            </span>
-          </Button>
+          <div style={{ paddingTop: "5px" }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              className="button-style"
+              component={Link}
+              to={state.logged ? `/groups/${state.userId}` : "/signup"}
+            >
+              <span className="btn-signup-text btn-texts-login">
+                {state.logged ? "twoje zespoły" : "zarejestruj się"}
+              </span>
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </nav>
