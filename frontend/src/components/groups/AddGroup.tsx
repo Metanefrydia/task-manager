@@ -86,8 +86,7 @@ const AddGroup = (props: any) => {
         MenuProps={MenuProps}
       >
         {
-          //TODO Warning o referencji z findDOMNode do poprawki
-          props.users.map((user: any) => {
+          props.users.forEach((user: any) => {
             // @ts-ignore
             if (user._id !== currentUser._id) {
               return (

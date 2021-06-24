@@ -110,6 +110,7 @@ export default function BasicTable(props: any) {
         setLoading(false);
       })
       .catch((e) => console.log(e));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const [open, setOpen] = React.useState(false);
@@ -190,7 +191,7 @@ export default function BasicTable(props: any) {
           </TableHead>
 
           <TableBody>
-            {tasks.taskList.map((task: any) => {
+            {tasks.taskList.map((task: any, idx: number) => {
               let style;
               if (task.status === "W trakcie") {
                 style = state.inProgressColor;
@@ -204,7 +205,7 @@ export default function BasicTable(props: any) {
 
               return (
                 <TableRowComponent
-                  key={task.name}
+                  key={idx}
                   {...task}
                   tableGroup={props.group}
                   color={props.color}
