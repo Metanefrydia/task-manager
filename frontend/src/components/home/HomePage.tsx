@@ -41,8 +41,15 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
 
   const formatDate = (date: string) => {
     const splits = date.split(" ");
-    // @ts-ignore
-    return splits[3] + "-" + monthEnum[splits[1]] + "-" + splits[2];
+
+    var reg = /^\d+$/;
+    if (reg.test(date)){
+      return "nie"
+    }
+    else {
+      // @ts-ignore
+      return splits[3] + "-" + monthEnum[splits[1]] + "-" + splits[2];
+    }
   };
 
   const [state, setState] = React.useState<State>({
@@ -55,7 +62,9 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
 
   const selectDay = (day: any) => {
     const date = formatDate(String(day));
-    setState({ ...state, selectedDay: date });
+    if (date !== "nie") {
+      setState({...state, selectedDay: date});
+    }
     setLoaded(false);
   };
 
