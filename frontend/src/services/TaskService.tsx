@@ -16,10 +16,14 @@ class TaskService {
 
   public async editTask(taskData: any) {
     const editedTaskData = {
-      //TODO uzupełnic dane
+      _id: taskData._id,
+      title: taskData.title,
+      description: taskData.description,
+      status: taskData.status,
+      assignee: taskData.assignee,
     };
 
-    await axios.put(`/task/${taskData.taskId}`, editedTaskData, {
+    await axios.put(`/task/${taskData._id}`, editedTaskData, {
       headers: { Authorization: AuthenticationService.getToken() },
     });
   }

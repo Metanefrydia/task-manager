@@ -14,6 +14,7 @@ import {
   OutlinedInput,
   Divider,
 } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
@@ -35,6 +36,7 @@ const LoginCard = () => {
     message: "",
   });
 
+  let history = useHistory();
   const [errors, setErrors] = React.useState<any>();
 
   const handleChange =
@@ -73,7 +75,8 @@ const LoginCard = () => {
 
     AuthenticationService.login(token).then(
       () => {
-        window.location.href = "/";
+        let id = AuthenticationService.getUserDetails()?._id;
+        history.push(`/${id}`);
       },
       (error) => {
         const resMessage =
@@ -221,12 +224,6 @@ const LoginCard = () => {
             Nie masz jeszcze konta?{" "}
             <Link to="/signup" className="login-link">
               Zarejestruj się
-            </Link>
-          </p>
-          <p className="login-link-des">
-            Zapomniałeś hasła?{" "}
-            <Link to="#" className="login-link">
-              Przypomnij
             </Link>
           </p>
         </CardContent>

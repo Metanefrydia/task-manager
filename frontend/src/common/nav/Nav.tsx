@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import TaskManagerLogo from "../../images/TaskManagerLogo.png";
 import "./Nav.css";
 import { Button, Grid } from "@material-ui/core";
@@ -16,12 +17,15 @@ const Nav = () => {
     userId: AuthenticationService.getUserDetails()?._id,
   });
 
+  let history = useHistory();
+
   const logOutHandle = () => {
     setState({
       logged: false,
       userId: "",
     });
     AuthenticationService.logout();
+    history.push("/login");
   };
 
   return (
@@ -43,7 +47,7 @@ const Nav = () => {
           xs={8}
           style={{ paddingLeft: "25px" }}
         >
-          <Link to="/">
+          <Link to={`/${state.userId}`}>
             <img
               className="nav-logo"
               src={TaskManagerLogo}
@@ -64,7 +68,7 @@ const Nav = () => {
               <Button
                 variant="outlined"
                 color="secondary"
-                style={{ marginRight: "20px" }}
+                className="button-style"
                 onClick={logOutHandle}
               >
                 <span className="btn-email-text btn-texts-login">
@@ -77,7 +81,7 @@ const Nav = () => {
                 color="secondary"
                 component={Link}
                 to="/login"
-                style={{ marginRight: "20px" }}
+                className="button-style"
               >
                 <span className="btn-email-text btn-texts-login">
                   zaloguj się
@@ -85,16 +89,19 @@ const Nav = () => {
               </Button>
             )}
           </div>
-          <Button
-            variant="contained"
-            color="secondary"
-            component={Link}
-            to={state.logged ? `/groups/${state.userId}` : "/signup"}
-          >
-            <span className="btn-signup-text btn-texts-login">
-              {state.logged ? "twoje zespoły" : "zarejestruj się"}
-            </span>
-          </Button>
+          <div style={{ paddingTop: "5px" }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              className="button-style"
+              component={Link}
+              to={state.logged ? `/groups/${state.userId}` : "/signup"}
+            >
+              <span className="btn-signup-text btn-texts-login">
+                {state.logged ? "twoje zespoły" : "zarejestruj się"}
+              </span>
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </nav>

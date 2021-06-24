@@ -18,10 +18,10 @@ export class App extends React.Component<Props, State> {
         <BrowserRouter>
           <Nav />
           <Switch>
-            <PrivateRoute path="/" component={HomePage} exact />
             <Route path="/signup" exact component={RegisterPage} />
             <Route path="/login" exact component={LoginPage} />
             <PrivateRoute path="/groups/:id" component={GroupPage} exact />
+            <PrivateRoute path="/:id" component={HomePage} exact />
             <Route path="*">
               <div> 404 Not Found</div>
             </Route>
