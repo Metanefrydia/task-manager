@@ -137,8 +137,9 @@ export default function BasicTable(props: any) {
     };
 
     TaskService.addTask(newTaskData).then(() => {
-      setNewTask({ ...newTask, title: "" });
+      setNewTask({ ...newTask, title: "", description: "" });
       setLoading(true);
+      setOpen(false);
     });
   };
 

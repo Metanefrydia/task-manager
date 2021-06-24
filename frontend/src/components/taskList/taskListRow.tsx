@@ -218,6 +218,10 @@ export default function TableRowComponent(props: any) {
     }
   };
 
+  const handleNameOnBlur = (event: any) => {
+    setEditState({ ...editState, editted: true, taskNameClicked: false });
+  };
+
   const handleEsc = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       setEditState({ ...editState, editted: true, taskNameClicked: false });
@@ -255,6 +259,14 @@ export default function TableRowComponent(props: any) {
         descriptionClicked: false,
       });
     }
+  };
+
+  const handleDescriptionOnBlur = (event: any) => {
+    setEditDescriptionState({
+      ...editDescriptionState,
+      editted: true,
+      descriptionClicked: false,
+    });
   };
 
   useEffect(() => {
@@ -343,6 +355,7 @@ export default function TableRowComponent(props: any) {
               onChange={handleInput}
               onKeyPress={handleEnter}
               onKeyDown={handleEsc}
+              onBlur={handleNameOnBlur}
               value={editState.taskName}
             ></TextField>
           </TableCell>
@@ -452,7 +465,7 @@ export default function TableRowComponent(props: any) {
                 <TableHead>
                   <TableRow>
                     {editDescriptionState.descriptionClicked ? (
-                      <TableCell onClick={handleNameClick}>
+                      <TableCell onClick={handleDescriptionClick}>
                         <TextField
                           id={"change-description-field"}
                           autoFocus={true}
@@ -460,6 +473,7 @@ export default function TableRowComponent(props: any) {
                           onChange={handleDescriptionInput}
                           onKeyPress={handleDescriptionEnter}
                           onKeyDown={handleDescriptionEsc}
+                          onBlur={handleDescriptionOnBlur}
                           value={editDescriptionState.description}
                           placeholder={"Opis"}
                         ></TextField>
