@@ -24,11 +24,28 @@ const AddGroup = (props: any) => {
   });
   // @ts-ignore
   const [members, setMembers] = useState<UserDetails[]>([currentUser]);
+  const [errors, setErrors] = React.useState<any>();
 
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setName({ ...name, [prop]: event.target.value });
+
+      if (prop === "name") {
+        validateGroupName(event.target.value);
+      }
     };
+
+  const validateGroupName = (value: any) => {
+    setErrors({ ...errors, name: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, name: "Nazwa grupy jest wymagana." });
+    } else if (value.length > 15) {
+      setErrors({
+        ...errors,
+        name: "Max. 15 znaków.",
+      });
+    }
+  };
 
   const handleMembers = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMembers(event.target.value as UserDetails[]);
@@ -43,8 +60,12 @@ const AddGroup = (props: any) => {
       }),
     };
 
-    GroupService.addGroup(groupData);
-    window.location.reload();
+    if (name.name !== "") {
+      GroupService.addGroup(groupData).then((val) => console.log(val));
+      window.location.reload();
+    } else {
+      validateGroupName(name.name)
+    }
   };
 
   const MenuProps = {
@@ -59,11 +80,13 @@ const AddGroup = (props: any) => {
   return (
     <Box className={"inRowElement"}>
       <TextField
-        label="Nazwa grupy..."
+        label="Nazwa grupy"
         variant="outlined"
-        placeholder="Nazwa"
+        placeholder="Nazwa grupy"
         value={name.name}
         onChange={handleChange("name")}
+        error={Boolean(errors?.name)}
+        helperText={errors?.name}
       />
 
       <Select
@@ -85,23 +108,25 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {
-          props.users.forEach((user: any) => {
-            // @ts-ignore
-            if (user._id !== currentUser._id) {
-              return (
-                <MenuItem key={user._id} value={user}>
-                  {user.name}
-                </MenuItem>
-              );
-            }
-          })
-        }
+        {props.users.forEach((user: any) => {
+          // @ts-ignore
+          if (user._id !== currentUser._id) {
+            return (
+              <MenuItem key={user._id} value={user}>
+                {user.name}
+              </MenuItem>
+            );
+          }
+        })}
       </Select>
 
       <div>
-        <IconButton aria-label="delete" onClick={onAdd}>
-          <AddIcon style={{ color: "#03A9F4" }} fontSize="large" />
+        <IconButton
+          aria-label="add"
+          onClick={onAdd}
+          disabled={Boolean(errors?.name)}
+        >
+          <AddIcon style={{ color: Boolean(errors?.name) ? "#979797" : "#03A9F4" }} fontSize="large" />
         </IconButton>
         <IconButton aria-label="delete" onClick={props.cancelAdd}>
           <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />

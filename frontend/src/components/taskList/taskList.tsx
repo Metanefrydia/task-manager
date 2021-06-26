@@ -96,6 +96,7 @@ export default function BasicTable(props: any) {
   });
 
   const [isLoading, setLoading] = React.useState(true);
+  const [errors, setErrors] = React.useState<any>();
 
   useEffect(() => {
     TaskService.getTasks(props.day)
@@ -151,6 +152,22 @@ export default function BasicTable(props: any) {
   const handleNewTaskChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewTask({ ...newTask, [prop]: event.target.value });
+
+      if (prop === "title") {
+        validateTitle(event.target.value)
+      }
+    };
+
+    const validateTitle = (value: any) => {
+      setErrors({ ...errors, title: "" });
+      if (value.length === 0) {
+        setErrors({ ...errors, title: "Tytuł jest wymagany." });
+      } else if (value.length > 256) {
+        setErrors({
+          ...errors,
+          title: "Tytuł nie powinien przekraczać 256 znaków.",
+        });
+      }
     };
 
   if (isLoading) {
@@ -242,6 +259,8 @@ export default function BasicTable(props: any) {
                     placeholder="Dodaj zadanie"
                     value={newTask.title}
                     onChange={handleNewTaskChange("title")}
+                    error={Boolean(errors?.title)}
+                    helperText={errors?.title}
                   />
                 ) : (
                   <div style={{ color: "#979797" }}>+ Dodaj</div>
@@ -260,6 +279,7 @@ export default function BasicTable(props: any) {
                       color="primary"
                       style={{ width: "100%", backgroundColor: "#03A9F4" }}
                       onClick={handleAddButton}
+                      disabled={Boolean(errors?.title)}
                     >
                       DODAJ
                     </Button>

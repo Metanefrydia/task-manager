@@ -103,6 +103,7 @@ export default function TableRowComponent(props: any) {
     members: [] as Member[],
   });
   const [membersName, setMembersName] = React.useState<string[]>([]);
+  const [errors, setErrors] = React.useState<any>();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -205,8 +206,24 @@ export default function TableRowComponent(props: any) {
     }
   };
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setEditState({ ...editState, taskName: event.target.value });
+
+    if (prop === "title") {
+      validateTitle(event.target.value)
+    }
+  };
+
+  const validateTitle = (value: any) => {
+    setErrors({ ...errors, title: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, title: "Tytuł jest wymagany." });
+    } else if (value.length > 256) {
+      setErrors({
+        ...errors,
+        title: "Tytuł nie powinien przekraczać 256 znaków.",
+      });
+    }
   };
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -302,14 +319,14 @@ export default function TableRowComponent(props: any) {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && buttonState.personId === "") {
+    if (!isLoading && !errors?.title && buttonState.personId === "") {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
         description: editDescriptionState.description,
         status: buttonState.statusText,
       });
-    } else if (!isLoading) {
+    } else if (!isLoading && !errors?.title) {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
@@ -353,11 +370,13 @@ export default function TableRowComponent(props: any) {
               id={"change-name-field"}
               autoFocus={true}
               style={{ width: "100%" }}
-              onChange={handleInput}
+              onChange={handleInput("title")}
               onKeyPress={handleEnter}
               onKeyDown={handleEsc}
               onBlur={handleNameOnBlur}
               value={editState.taskName}
+              error={Boolean(errors?.title)}
+              helperText={errors?.title}
             ></TextField>
           </TableCell>
         ) : (

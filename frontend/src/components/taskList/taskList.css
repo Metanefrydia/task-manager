@@ -95,9 +95,9 @@
 }
 
 .new-task-input {
-  height: 10px !important;
+  height: 50px !important;
   width: 100%;
-  bottom: 5px;
+  justify-content: space-evenly;
 }
 
 .button-div {
