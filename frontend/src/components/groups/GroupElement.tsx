@@ -142,10 +142,7 @@ const GroupElement = (props: any) => {
 
         <div>
           <IconButton onClick={onEditGroup}>
-            <SaveIcon
-              style={{ color: "#03A9F4" }}
-              fontSize="large"
-            />
+            <SaveIcon style={{ color: "#03A9F4" }} fontSize="large" />
           </IconButton>
           <IconButton onClick={cancelEdit}>
             <CancelIcon

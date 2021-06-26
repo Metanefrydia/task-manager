@@ -24,7 +24,7 @@ const GroupPage: React.FC<GroupPageInterface> = (props) => {
     };
 
     readGroups();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div>{!isLoading ? <GroupCard {...groups} /> : <p>Ładuję</p>}</div>;

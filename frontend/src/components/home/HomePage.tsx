@@ -43,10 +43,9 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
     const splits = date.split(" ");
 
     var reg = /^\d+$/;
-    if (reg.test(date)){
-      return "nie"
-    }
-    else {
+    if (reg.test(date)) {
+      return "nie";
+    } else {
       // @ts-ignore
       return splits[3] + "-" + monthEnum[splits[1]] + "-" + splits[2];
     }
@@ -63,7 +62,7 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
   const selectDay = (day: any) => {
     const date = formatDate(String(day));
     if (date !== "nie") {
-      setState({...state, selectedDay: date});
+      setState({ ...state, selectedDay: date });
     }
     setLoaded(false);
   };

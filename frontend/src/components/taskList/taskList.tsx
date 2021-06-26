@@ -111,7 +111,7 @@ export default function BasicTable(props: any) {
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const [open, setOpen] = React.useState(false);
@@ -154,21 +154,21 @@ export default function BasicTable(props: any) {
       setNewTask({ ...newTask, [prop]: event.target.value });
 
       if (prop === "title") {
-        validateTitle(event.target.value)
+        validateTitle(event.target.value);
       }
     };
 
-    const validateTitle = (value: any) => {
-      setErrors({ ...errors, title: "" });
-      if (value.length === 0) {
-        setErrors({ ...errors, title: "Tytuł jest wymagany." });
-      } else if (value.length > 256) {
-        setErrors({
-          ...errors,
-          title: "Tytuł nie powinien przekraczać 256 znaków.",
-        });
-      }
-    };
+  const validateTitle = (value: any) => {
+    setErrors({ ...errors, title: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, title: "Tytuł jest wymagany." });
+    } else if (value.length > 256) {
+      setErrors({
+        ...errors,
+        title: "Tytuł nie powinien przekraczać 256 znaków.",
+      });
+    }
+  };
 
   if (isLoading) {
     return <div></div>;

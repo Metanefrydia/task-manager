@@ -64,7 +64,7 @@ const AddGroup = (props: any) => {
       GroupService.addGroup(groupData).then((val) => console.log(val));
       window.location.reload();
     } else {
-      validateGroupName(name.name)
+      validateGroupName(name.name);
     }
   };
 
@@ -126,7 +126,10 @@ const AddGroup = (props: any) => {
           onClick={onAdd}
           disabled={Boolean(errors?.name)}
         >
-          <AddIcon style={{ color: Boolean(errors?.name) ? "#979797" : "#03A9F4" }} fontSize="large" />
+          <AddIcon
+            style={{ color: Boolean(errors?.name) ? "#979797" : "#03A9F4" }}
+            fontSize="large"
+          />
         </IconButton>
         <IconButton aria-label="delete" onClick={props.cancelAdd}>
           <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />
