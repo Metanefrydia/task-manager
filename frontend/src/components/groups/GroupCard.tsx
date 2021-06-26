@@ -5,11 +5,13 @@ import AddGroup from "./AddGroup";
 import "./group.css";
 import GroupService from "../../services/GroupsService";
 import AuthenticationService from "../../services/AuthenticationService";
+import { useSnackbar } from "notistack";
 
 const GroupCard = (props: any) => {
   const [users, setUsers] = useState<any>();
   const [visible, setVisible] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
 
   const readUsers = () => {
     AuthenticationService.getUsers().then((response: any) => {
@@ -24,7 +26,10 @@ const GroupCard = (props: any) => {
 
   const deleteGroup = (groupIndex: number, groupId: string) => {
     props.data.splice(groupIndex, 1);
-    GroupService.deleteGroup(groupId);
+    GroupService.deleteGroup(groupId).then(
+      () => enqueueSnackbar("Usunięto grupę!"),
+      () => enqueueSnackbar("Wystąpił błąd. Spróbuj usunąć grupę ponownie.")
+    );
     window.location.reload();
   };
 

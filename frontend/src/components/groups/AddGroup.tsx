@@ -15,6 +15,7 @@ import AuthenticationService, {
   UserDetails,
 } from "../../services/AuthenticationService";
 import GroupService from "../../services/GroupsService";
+import { useSnackbar } from "notistack";
 
 const AddGroup = (props: any) => {
   const currentUser: UserDetails | null =
@@ -25,6 +26,7 @@ const AddGroup = (props: any) => {
   // @ts-ignore
   const [members, setMembers] = useState<UserDetails[]>([currentUser]);
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +63,10 @@ const AddGroup = (props: any) => {
     };
 
     if (name.name !== "") {
-      GroupService.addGroup(groupData).then((val) => console.log(val));
+      GroupService.addGroup(groupData).then(
+        () => enqueueSnackbar("Dodano grupę!"),
+        () => enqueueSnackbar("Wystąpił błąd. Spróbuj dodać grupę ponownie.")
+      );
       window.location.reload();
     } else {
       validateGroupName(name.name);

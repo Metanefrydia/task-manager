@@ -18,6 +18,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import TableRowComponent from "./taskListRow";
 import TaskService from "../../services/TaskService";
+import { useSnackbar } from "notistack";
 
 class Task {
   date: string;
@@ -97,6 +98,7 @@ export default function BasicTable(props: any) {
 
   const [isLoading, setLoading] = React.useState(true);
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     TaskService.getTasks(props.day)
@@ -138,11 +140,19 @@ export default function BasicTable(props: any) {
       status: "Do zrobienia",
     };
 
-    TaskService.addTask(newTaskData).then(() => {
-      setNewTask({ ...newTask, title: "", description: "" });
-      setLoading(true);
-      setOpen(false);
-    });
+    TaskService.addTask(newTaskData).then(
+      () => {
+        setNewTask({ ...newTask, title: "", description: "" });
+        setLoading(true);
+        setOpen(false);
+        enqueueSnackbar("Utworzono task!");
+      },
+      () => {
+        enqueueSnackbar(
+          "Wystąpił błąd podczas dodawania tasku. Spróbuj ponownie."
+        );
+      }
+    );
   };
 
   const handleDeleting = () => {

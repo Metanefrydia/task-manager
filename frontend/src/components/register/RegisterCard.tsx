@@ -19,6 +19,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import AuthenticationService from "../../services/AuthenticationService";
+import { useSnackbar } from 'notistack';
 
 interface State {
   email: string;
@@ -38,6 +39,7 @@ const RegisterCard = () => {
   });
 
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,7 +119,9 @@ const RegisterCard = () => {
 
     AuthenticationService.register(token).then(
       () => {
-        window.location.href = "/";
+        let id = AuthenticationService.getUserDetails()?._id;
+        window.location.href = `/${id}`;
+        enqueueSnackbar("Utworzono konto!");
       },
       (error) => {
         const resMessage =
@@ -130,6 +134,7 @@ const RegisterCard = () => {
           ...values,
           message: resMessage,
         });
+        enqueueSnackbar("Wystąpił błąd. Spróbuj utworzyć konto ponownie.");
       }
     );
   };
@@ -237,6 +242,7 @@ const RegisterCard = () => {
                 variant="contained"
                 type="submit"
                 size="large"
+                className="register-button"
                 style={{
                   backgroundColor: "#303F9F",
                   color: "white",

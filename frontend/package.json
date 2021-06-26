@@ -16,6 +16,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
+    "notistack": "^1.0.9",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-horizontal-datepicker": "github:LukaszLik/react-horizontal-datepicker#master",
