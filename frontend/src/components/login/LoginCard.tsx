@@ -77,6 +77,7 @@ const LoginCard = () => {
       () => {
         let id = AuthenticationService.getUserDetails()?._id;
         history.push(`/${id}`);
+        history.go(0);
       },
       (error) => {
         const resMessage =
