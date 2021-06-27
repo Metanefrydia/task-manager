@@ -43,8 +43,9 @@ const AddGroup = (props: any) => {
       }),
     };
 
-    GroupService.addGroup(groupData);
-    window.location.reload();
+    GroupService.addGroup(groupData).then((response) => {
+      props.readGroups();
+    });
   };
 
   const MenuProps = {
@@ -85,25 +86,23 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {
-          props.users.forEach((user: any) => {
-            // @ts-ignore
-            if (user._id !== currentUser._id) {
-              return (
-                <MenuItem key={user._id} value={user}>
-                  {user.name}
-                </MenuItem>
-              );
-            }
-          })
-        }
+        {props.users.forEach((user: any) => {
+          // @ts-ignore
+          if (user._id !== currentUser._id) {
+            return (
+              <MenuItem key={user._id} value={user}>
+                {user.name}
+              </MenuItem>
+            );
+          }
+        })}
       </Select>
 
       <div>
         <IconButton aria-label="delete" onClick={onAdd}>
           <AddIcon style={{ color: "#03A9F4" }} fontSize="large" />
         </IconButton>
-        <IconButton aria-label="delete" onClick={props.cancelAdd}>
+        <IconButton aria-label="delete" onClick={props.setAddPanelToHide()}>
           <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />
         </IconButton>
       </div>
