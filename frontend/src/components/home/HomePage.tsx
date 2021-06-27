@@ -86,6 +86,7 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
           endDate={180}
           labelFormat={"yyyy MMMM"}
           color={"#03A9F4"}
+          beginDate={30}
         />
       </div>
       <div className="table-container">

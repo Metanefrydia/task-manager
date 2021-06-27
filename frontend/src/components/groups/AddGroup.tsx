@@ -64,10 +64,11 @@ const AddGroup = (props: any) => {
 
     if (name.name !== "") {
       GroupService.addGroup(groupData).then(
-        () => enqueueSnackbar("Dodano grupę!"),
+        () => {
+          props.readGroups();
+          enqueueSnackbar("Dodano grupę!")},
         () => enqueueSnackbar("Wystąpił błąd. Spróbuj dodać grupę ponownie.")
       );
-      window.location.reload();
     } else {
       validateGroupName(name.name);
     }
@@ -99,7 +100,6 @@ const AddGroup = (props: any) => {
         value={members}
         onChange={handleMembers}
         input={<Input className={"addGroupSelect"} />}
-        variant="filled"
         renderValue={(selected) => (
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {(selected as UserDetails[]).map((value) => (
@@ -113,7 +113,7 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {props.users.forEach((user: any) => {
+        {props.users.map((user: any) => {
           // @ts-ignore
           if (user._id !== currentUser._id) {
             return (
@@ -136,7 +136,7 @@ const AddGroup = (props: any) => {
             fontSize="large"
           />
         </IconButton>
-        <IconButton aria-label="delete" onClick={props.cancelAdd}>
+        <IconButton aria-label="delete" onClick={props.setAddPanelToHide()}>
           <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />
         </IconButton>
       </div>
