@@ -33,6 +33,7 @@ const GroupPage: React.FC<GroupPageInterface> = (props) => {
   const readUsers = () => {
     AuthenticationService.getUsers().then((response: any) => {
       setUsers(response.data.data.users);
+      console.log(users);
       setUsersLoading(false);
     });
   };

@@ -72,7 +72,6 @@ const AddGroup = (props: any) => {
         value={members}
         onChange={handleMembers}
         input={<Input className={"addGroupSelect"} />}
-        variant="filled"
         renderValue={(selected) => (
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {(selected as UserDetails[]).map((value) => (
@@ -86,7 +85,7 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {props.users.forEach((user: any) => {
+        {props.users.map((user: any) => {
           // @ts-ignore
           if (user._id !== currentUser._id) {
             return (
