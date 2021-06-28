@@ -8,13 +8,11 @@ import theme from "./theme";
 import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <SnackbarProvider maxSnack={3}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </SnackbarProvider>
-  </React.StrictMode>,
+  <SnackbarProvider maxSnack={3}>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </SnackbarProvider>,
   document.getElementById("root")
 );
 

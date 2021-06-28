@@ -62,9 +62,13 @@ const AddGroup = (props: any) => {
       }),
     };
 
-    GroupService.addGroup(groupData).then((response) => {
-      props.readGroups();
-    });
+    GroupService.addGroup(groupData).then(
+      () => {
+        props.readGroups();
+        enqueueSnackbar("Dodano grupę!");
+      },
+      () => enqueueSnackbar("Wystąpił błąd. Spróbuj dodać grupę ponownie.")
+    );
   };
 
   const MenuProps = {
@@ -106,16 +110,19 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {props.users.forEach((user: any) => {
-          // @ts-ignore
-          if (user._id !== currentUser._id) {
-            return (
-              <MenuItem key={user._id} value={user}>
-                {user.name}
-              </MenuItem>
-            );
-          }
-        })}
+        {
+          // eslint-disable-next-line array-callback-return
+          props.users.map((user: any) => {
+            // @ts-ignore
+            if (user._id !== currentUser._id) {
+              return (
+                <MenuItem key={user._id} value={user}>
+                  {user.name}
+                </MenuItem>
+              );
+            }
+          })
+        }
       </Select>
 
       <div>

@@ -19,7 +19,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import AuthenticationService from "../../services/AuthenticationService";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 
 interface State {
   email: string;

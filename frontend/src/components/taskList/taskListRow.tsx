@@ -119,10 +119,10 @@ export default function TableRowComponent(props: any) {
     TaskService.deleteTask(props._id).then(
       () => {
         props.handleDelete();
-        enqueueSnackbar("Usunięto task!");
+        enqueueSnackbar("Usunięto zadanie!");
       },
       () => {
-        enqueueSnackbar("Wystąpił błąd podczas usuwania taska!");
+        enqueueSnackbar("Wystąpił błąd podczas usuwania zadania!");
       }
     );
   };

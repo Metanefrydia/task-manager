@@ -145,11 +145,11 @@ export default function BasicTable(props: any) {
         setNewTask({ ...newTask, title: "", description: "" });
         setLoading(true);
         setOpen(false);
-        enqueueSnackbar("Utworzono task!");
+        enqueueSnackbar("Utworzono zadanie!");
       },
       () => {
         enqueueSnackbar(
-          "Wystąpił błąd podczas dodawania tasku. Spróbuj ponownie."
+          "Wystąpił błąd podczas dodawania zadania. Spróbuj ponownie."
         );
       }
     );

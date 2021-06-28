@@ -15,6 +15,7 @@ import CancelIcon from "@material-ui/icons/CancelOutlined";
 import "./group.css";
 import { UserDetails } from "../../services/AuthenticationService";
 import GroupService from "../../services/GroupsService";
+import { useSnackbar } from "notistack";
 
 const GroupElement = (props: any) => {
   const [editVersion, setEdit] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const GroupElement = (props: any) => {
     })
   );
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const changeToEdit = () => {
     setEdit(true);
@@ -77,27 +79,35 @@ const GroupElement = (props: any) => {
 
   const onEditGroup = () => {
     if (members.length === 0) {
-      GroupService.deleteGroup(props.group._id).then(() => {
-        props.readGroups();
-      });
+      GroupService.deleteGroup(props.group._id).then(
+        () => {
+          enqueueSnackbar("Usunięto grupę!");
+          props.readGroups();
+        },
+        () => enqueueSnackbar("Wystąpił błąd. Spróbuj usunąć grupę ponownie.")
+      );
     } else {
       const data = {
         _id: props.group._id,
         name: groupName.name,
         members: members,
       };
-      GroupService.editGroup(data).then(() => {
-        props.readGroups();
-      });
+      GroupService.editGroup(data).then(
+        () => {
+          enqueueSnackbar("Edytowano grupę!");
+          props.readGroups();
+        },
+        () => enqueueSnackbar("Wystąpił błąd. Spróbuj edytować grupę ponownie.")
+      );
     }
   };
 
   if (!editVersion) {
     return (
       <Box className={"inRowElement"}>
-        <p className="element-title-text" style={{ marginLeft: "5px" }}>
+        <div className="element-title-text" style={{ marginLeft: "5px" }}>
           {props.group.name}
-        </p>
+        </div>
 
         <div className={"elementChipDiv"}>
           {members.map((member) => {
@@ -126,9 +136,9 @@ const GroupElement = (props: any) => {
     return (
       <Box className={"inRowElement"}>
         <TextField
-          label="nazwa"
+          label="Nazwa grupy"
           variant="outlined"
-          placeholder="Nazwa grupy..."
+          placeholder="Nazwa grupy"
           value={groupName.name}
           onChange={handleChange("name")}
           error={Boolean(errors?.name)}
