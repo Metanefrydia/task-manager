@@ -26,10 +26,12 @@ const GroupElement = (props: any) => {
       return props.group.members.includes(user._id);
     })
   );
+  const [errors, setErrors] = React.useState<any>();
 
   const changeToEdit = () => {
     setEdit(true);
   };
+
   const cancelEdit = () => {
     setEdit(false);
     setMembers(
@@ -38,10 +40,27 @@ const GroupElement = (props: any) => {
       })
     );
   };
+
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setGroupName({ ...groupName, [prop]: event.target.value });
+
+      if (prop === "name") {
+        validateGroupName(event.target.value);
+      }
     };
+
+  const validateGroupName = (value: any) => {
+    setErrors({ ...errors, name: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, name: "Nazwa grupy jest wymagana." });
+    } else if (value.length > 32) {
+      setErrors({
+        ...errors,
+        name: "Max. 32 znaki.",
+      });
+    }
+  };
 
   const handleMembers = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMembers(event.target.value as UserDetails[]);
@@ -112,6 +131,8 @@ const GroupElement = (props: any) => {
           placeholder="Nazwa grupy..."
           value={groupName.name}
           onChange={handleChange("name")}
+          error={Boolean(errors?.name)}
+          helperText={errors?.name}
         />
 
         <Select
@@ -144,8 +165,11 @@ const GroupElement = (props: any) => {
         </Select>
 
         <div>
-          <IconButton onClick={onEditGroup}>
-            <SaveIcon style={{ color: "#03A9F4" }} fontSize="large" />
+          <IconButton onClick={onEditGroup} disabled={Boolean(errors?.name)}>
+            <SaveIcon
+              style={{ color: Boolean(errors?.name) ? "#979797" : "#03A9F4" }}
+              fontSize="large"
+            />
           </IconButton>
           <IconButton onClick={cancelEdit}>
             <CancelIcon
