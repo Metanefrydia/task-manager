@@ -466,16 +466,9 @@ export default function TableRowComponent(props: any) {
             >
               <StyledMenuItem>
                 <ListItemText
-                  id={"1"}
+                  id={"4"}
                   onClick={handleMenuClick}
-                  primary="W trakcie"
-                />
-              </StyledMenuItem>
-              <StyledMenuItem>
-                <ListItemText
-                  id={"2"}
-                  onClick={handleMenuClick}
-                  primary="Wykonano"
+                  primary="Wstrzymano"
                 />
               </StyledMenuItem>
               <StyledMenuItem>
@@ -487,9 +480,16 @@ export default function TableRowComponent(props: any) {
               </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemText
-                  id={"4"}
+                  id={"1"}
                   onClick={handleMenuClick}
-                  primary="Wstrzymano"
+                  primary="W trakcie"
+                />
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemText
+                  id={"2"}
+                  onClick={handleMenuClick}
+                  primary="Wykonano"
                 />
               </StyledMenuItem>
             </StyledMenu>
