@@ -61,7 +61,10 @@ const RegisterCard = () => {
     } else if (!re.test(String(value).toLowerCase())) {
       setErrors({ ...errors, email: "Niepoprawny adres email." });
     } else if (value.length > 36) {
-      setErrors({ ...errors, email: "Email nie powinien mieć więcej ni 36 znaków."});
+      setErrors({
+        ...errors,
+        email: "Email nie powinien mieć więcej ni 36 znaków.",
+      });
     }
   };
 

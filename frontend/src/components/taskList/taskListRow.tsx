@@ -206,13 +206,14 @@ export default function TableRowComponent(props: any) {
     }
   };
 
-  const handleInput = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditState({ ...editState, taskName: event.target.value });
+  const handleInput =
+    (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEditState({ ...editState, taskName: event.target.value });
 
-    if (prop === "title") {
-      validateTitle(event.target.value)
-    }
-  };
+      if (prop === "title") {
+        validateTitle(event.target.value);
+      }
+    };
 
   const validateTitle = (value: any) => {
     setErrors({ ...errors, title: "" });
