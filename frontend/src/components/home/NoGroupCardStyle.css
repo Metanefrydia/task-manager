@@ -1,0 +1,26 @@
+.to-group-link-container{
+    margin-top: 5vh;
+}
+
+.to-group-link {
+    font: "Roboto";
+    font-size: 22px;
+    color: #03a9f4;
+    font-weight: 400;
+    text-decoration: none;
+
+}
+
+.to-group-link:hover {
+    color: #6ef9ff;
+}
+
+.to-group-link-des {
+    font: "Roboto";
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 16px;
+    letter-spacing: 0.15px;
+    color: #002226;
+}
+
