@@ -110,7 +110,7 @@ export default function BasicTable(props: any) {
         setLoading(false);
       })
       .catch((e) => console.log(e));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const [open, setOpen] = React.useState(false);

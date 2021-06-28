@@ -58,16 +58,19 @@ const GroupElement = (props: any) => {
 
   const onEditGroup = () => {
     if (members.length === 0) {
-      GroupService.deleteGroup(props.group._id);
+      GroupService.deleteGroup(props.group._id).then(() => {
+        props.readGroups();
+      });
     } else {
       const data = {
         _id: props.group._id,
         name: groupName.name,
         members: members,
       };
-      GroupService.editGroup(data);
+      GroupService.editGroup(data).then(() => {
+        props.readGroups();
+      });
     }
-    window.location.reload();
   };
 
   if (!editVersion) {
@@ -142,10 +145,7 @@ const GroupElement = (props: any) => {
 
         <div>
           <IconButton onClick={onEditGroup}>
-            <SaveIcon
-              style={{ color: "#03A9F4" }}
-              fontSize="large"
-            />
+            <SaveIcon style={{ color: "#03A9F4" }} fontSize="large" />
           </IconButton>
           <IconButton onClick={cancelEdit}>
             <CancelIcon
