@@ -21,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AuthenticationService from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
+import { useSnackbar } from "notistack";
 
 const TableCell = withStyles(() => ({
   root: {
@@ -104,6 +105,7 @@ export default function TableRowComponent(props: any) {
   });
   const [membersName, setMembersName] = React.useState<string[]>([]);
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -114,7 +116,15 @@ export default function TableRowComponent(props: any) {
   };
 
   const deleteTask = () => {
-    TaskService.deleteTask(props._id).then(() => props.handleDelete());
+    TaskService.deleteTask(props._id).then(
+      () => {
+        props.handleDelete();
+        enqueueSnackbar("Usunięto task!");
+      },
+      () => {
+        enqueueSnackbar("Wystąpił błąd podczas usuwania taska!");
+      }
+    );
   };
 
   const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
@@ -326,7 +336,14 @@ export default function TableRowComponent(props: any) {
         title: editState.taskName,
         description: editDescriptionState.description,
         status: buttonState.statusText,
-      });
+      }).then(
+        () => {
+          enqueueSnackbar("Edytowano task!");
+        },
+        () => {
+          enqueueSnackbar("Wystąpił błąd podczas edytowania tasku.");
+        }
+      );
     } else if (!isLoading && !errors?.title) {
       TaskService.editTask({
         _id: props._id,
@@ -334,7 +351,14 @@ export default function TableRowComponent(props: any) {
         description: editDescriptionState.description,
         status: buttonState.statusText,
         assignee: buttonState.personId,
-      });
+      }).then(
+        () => {
+          enqueueSnackbar("Edytowano task!");
+        },
+        () => {
+          enqueueSnackbar("Wystąpił błąd podczas edytowania tasku.");
+        }
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

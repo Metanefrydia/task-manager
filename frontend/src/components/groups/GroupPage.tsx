@@ -6,6 +6,7 @@ import "./group.css";
 import GroupService from "../../services/GroupsService";
 import AuthenticationService from "../../services/AuthenticationService";
 import { RouteComponentProps } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface RouteParams {
   id: string;
@@ -29,6 +30,8 @@ const GroupPage: React.FC<GroupPageInterface> = (props) => {
       setAddPanelToHide();
     });
   };
+  const [isLoading, setLoading] = useState(true);
+  const { enqueueSnackbar } = useSnackbar();
 
   const readUsers = () => {
     AuthenticationService.getUsers().then((response: any) => {
