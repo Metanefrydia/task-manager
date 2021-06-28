@@ -41,10 +41,10 @@ const AddGroup = (props: any) => {
     setErrors({ ...errors, name: "" });
     if (value.length === 0) {
       setErrors({ ...errors, name: "Nazwa grupy jest wymagana." });
-    } else if (value.length > 15) {
+    } else if (value.length > 32) {
       setErrors({
         ...errors,
-        name: "Max. 15 znaków.",
+        name: "Max. 32 znaki.",
       });
     }
   };

@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    maxlength: 36
+    maxlength: 64
   },
   name: {
     type: String,
     required: true,
-    maxlength: 36
+    maxlength: 64
   },
   groups: [{
     type: mongoose.Schema.Types.ObjectId,

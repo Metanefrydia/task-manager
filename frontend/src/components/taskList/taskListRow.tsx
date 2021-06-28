@@ -338,10 +338,10 @@ export default function TableRowComponent(props: any) {
         status: buttonState.statusText,
       }).then(
         () => {
-          enqueueSnackbar("Edytowano task!");
+          enqueueSnackbar("Edytowano zadanie!");
         },
         () => {
-          enqueueSnackbar("Wystąpił błąd podczas edytowania tasku.");
+          enqueueSnackbar("Wystąpił błąd podczas edytowania zadania.");
         }
       );
     } else if (!isLoading && !errors?.title) {
@@ -353,10 +353,10 @@ export default function TableRowComponent(props: any) {
         assignee: buttonState.personId,
       }).then(
         () => {
-          enqueueSnackbar("Edytowano task!");
+          enqueueSnackbar("Edytowano zadanie!");
         },
         () => {
-          enqueueSnackbar("Wystąpił błąd podczas edytowania tasku.");
+          enqueueSnackbar("Wystąpił błąd podczas edytowania zadania.");
         }
       );
     }
