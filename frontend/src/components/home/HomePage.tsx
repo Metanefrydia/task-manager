@@ -4,6 +4,7 @@ import TaskList from "../taskList/taskList";
 // @ts-ignore
 import DatePicker from "react-horizontal-datepicker";
 import GroupService from "../../services/GroupsService";
+import NoGroupCard from "./NoGroupCard";
 
 interface State {
   selectedDay: any;
@@ -92,6 +93,8 @@ export default function HomePage(props: { match: { params: { id: string } } }) {
       <div className="table-container">
         {!isLoading ? (
           <div>ładowanie</div>
+        ) : groups.data.length === 0 ? (
+          <NoGroupCard />
         ) : (
           groups.data.map((group: any, idx: number) => (
             <TaskList
