@@ -3,7 +3,6 @@
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
-  line-height: 2px;
   letter-spacing: 1.25px;
   color: #212121;
 }
@@ -13,9 +12,9 @@
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
-  line-height: 2px;
   letter-spacing: 1.25px;
   color: #212121;
+  text-align: left;
 }
 
 .groupStyle {
@@ -45,8 +44,8 @@
 }
 
 .inRowElement {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   padding-left: 7px;
   margin-bottom: 10px;
   margin-left: 4%;
@@ -57,6 +56,7 @@
   grid-template-columns: 20% 64% 13%;
   justify-items: flex-start;
   align-items: center;
+  border-radius: 5px;
 }
 
 .addGroupSelect {

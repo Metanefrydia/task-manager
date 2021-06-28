@@ -21,6 +21,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AuthenticationService from "../../services/AuthenticationService";
 import TaskService from "../../services/TaskService";
 import DeleteIcon from "@material-ui/icons/DeleteOutlineOutlined";
+import { useSnackbar } from "notistack";
 
 const TableCell = withStyles(() => ({
   root: {
@@ -103,6 +104,8 @@ export default function TableRowComponent(props: any) {
     members: [] as Member[],
   });
   const [membersName, setMembersName] = React.useState<string[]>([]);
+  const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -113,7 +116,15 @@ export default function TableRowComponent(props: any) {
   };
 
   const deleteTask = () => {
-    TaskService.deleteTask(props._id).then(() => props.handleDelete());
+    TaskService.deleteTask(props._id).then(
+      () => {
+        props.handleDelete();
+        enqueueSnackbar("Usunięto zadanie!");
+      },
+      () => {
+        enqueueSnackbar("Wystąpił błąd podczas usuwania zadania!");
+      }
+    );
   };
 
   const handleClickPerson = (event: React.MouseEvent<HTMLElement>) => {
@@ -205,8 +216,25 @@ export default function TableRowComponent(props: any) {
     }
   };
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEditState({ ...editState, taskName: event.target.value });
+  const handleInput =
+    (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setEditState({ ...editState, taskName: event.target.value });
+
+      if (prop === "title") {
+        validateTitle(event.target.value);
+      }
+    };
+
+  const validateTitle = (value: any) => {
+    setErrors({ ...errors, title: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, title: "Tytuł jest wymagany." });
+    } else if (value.length > 256) {
+      setErrors({
+        ...errors,
+        title: "Tytuł nie powinien przekraczać 256 znaków.",
+      });
+    }
   };
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -302,21 +330,35 @@ export default function TableRowComponent(props: any) {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && buttonState.personId === "") {
+    if (!isLoading && !errors?.title && buttonState.personId === "") {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
         description: editDescriptionState.description,
         status: buttonState.statusText,
-      });
-    } else if (!isLoading) {
+      }).then(
+        () => {
+          enqueueSnackbar("Edytowano zadanie!");
+        },
+        () => {
+          enqueueSnackbar("Wystąpił błąd podczas edytowania zadania.");
+        }
+      );
+    } else if (!isLoading && !errors?.title) {
       TaskService.editTask({
         _id: props._id,
         title: editState.taskName,
         description: editDescriptionState.description,
         status: buttonState.statusText,
         assignee: buttonState.personId,
-      });
+      }).then(
+        () => {
+          enqueueSnackbar("Edytowano zadanie!");
+        },
+        () => {
+          enqueueSnackbar("Wystąpił błąd podczas edytowania zadania.");
+        }
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -353,11 +395,13 @@ export default function TableRowComponent(props: any) {
               id={"change-name-field"}
               autoFocus={true}
               style={{ width: "100%" }}
-              onChange={handleInput}
+              onChange={handleInput("title")}
               onKeyPress={handleEnter}
               onKeyDown={handleEsc}
               onBlur={handleNameOnBlur}
               value={editState.taskName}
+              error={Boolean(errors?.title)}
+              helperText={errors?.title}
             ></TextField>
           </TableCell>
         ) : (

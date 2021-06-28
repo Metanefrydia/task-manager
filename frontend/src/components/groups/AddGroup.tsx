@@ -15,6 +15,7 @@ import AuthenticationService, {
   UserDetails,
 } from "../../services/AuthenticationService";
 import GroupService from "../../services/GroupsService";
+import { useSnackbar } from "notistack";
 
 const AddGroup = (props: any) => {
   const currentUser: UserDetails | null =
@@ -24,11 +25,29 @@ const AddGroup = (props: any) => {
   });
   // @ts-ignore
   const [members, setMembers] = useState<UserDetails[]>([currentUser]);
+  const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setName({ ...name, [prop]: event.target.value });
+
+      if (prop === "name") {
+        validateGroupName(event.target.value);
+      }
     };
+
+  const validateGroupName = (value: any) => {
+    setErrors({ ...errors, name: "" });
+    if (value.length === 0) {
+      setErrors({ ...errors, name: "Nazwa grupy jest wymagana." });
+    } else if (value.length > 32) {
+      setErrors({
+        ...errors,
+        name: "Max. 32 znaki.",
+      });
+    }
+  };
 
   const handleMembers = (event: React.ChangeEvent<{ value: unknown }>) => {
     setMembers(event.target.value as UserDetails[]);
@@ -43,9 +62,13 @@ const AddGroup = (props: any) => {
       }),
     };
 
-    GroupService.addGroup(groupData).then((response) => {
-      props.readGroups();
-    });
+    GroupService.addGroup(groupData).then(
+      () => {
+        props.readGroups();
+        enqueueSnackbar("Dodano grupę!");
+      },
+      () => enqueueSnackbar("Wystąpił błąd. Spróbuj dodać grupę ponownie.")
+    );
   };
 
   const MenuProps = {
@@ -60,11 +83,13 @@ const AddGroup = (props: any) => {
   return (
     <Box className={"inRowElement"}>
       <TextField
-        label="Nazwa grupy..."
+        label="Nazwa grupy"
         variant="outlined"
-        placeholder="Nazwa"
+        placeholder="Nazwa grupy"
         value={name.name}
         onChange={handleChange("name")}
+        error={Boolean(errors?.name)}
+        helperText={errors?.name}
       />
 
       <Select
@@ -85,21 +110,31 @@ const AddGroup = (props: any) => {
         )}
         MenuProps={MenuProps}
       >
-        {props.users.map((user: any) => {
-          // @ts-ignore
-          if (user._id !== currentUser._id) {
-            return (
-              <MenuItem key={user._id} value={user}>
-                {user.name}
-              </MenuItem>
-            );
-          }
-        })}
+        {
+          // eslint-disable-next-line array-callback-return
+          props.users.map((user: any) => {
+            // @ts-ignore
+            if (user._id !== currentUser._id) {
+              return (
+                <MenuItem key={user._id} value={user}>
+                  {user.name}
+                </MenuItem>
+              );
+            }
+          })
+        }
       </Select>
 
       <div>
-        <IconButton aria-label="delete" onClick={onAdd}>
-          <AddIcon style={{ color: "#03A9F4" }} fontSize="large" />
+        <IconButton
+          aria-label="add"
+          onClick={onAdd}
+          disabled={Boolean(errors?.name)}
+        >
+          <AddIcon
+            style={{ color: Boolean(errors?.name) ? "#979797" : "#03A9F4" }}
+            fontSize="large"
+          />
         </IconButton>
         <IconButton aria-label="delete" onClick={props.setAddPanelToHide()}>
           <DeleteIcon style={{ color: "red" }} fontSize="large" type="submit" />

@@ -19,6 +19,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import AuthenticationService from "../../services/AuthenticationService";
+import { useSnackbar } from "notistack";
 
 interface State {
   email: string;
@@ -38,6 +39,7 @@ const RegisterCard = () => {
   });
 
   const [errors, setErrors] = React.useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,17 +62,22 @@ const RegisterCard = () => {
       setErrors({ ...errors, email: "Email jest wymagany." });
     } else if (!re.test(String(value).toLowerCase())) {
       setErrors({ ...errors, email: "Niepoprawny adres email." });
+    } else if (value.length > 64) {
+      setErrors({
+        ...errors,
+        email: "Email nie powinien mieć więcej niż 64 znaki.",
+      });
     }
   };
 
   const validateUsername = (value: any) => {
     setErrors({ ...errors, username: "" });
     if (value.length === 0) {
-      setErrors({ ...errors, username: "Imię i nazwisko jest wymagane." });
-    } else if (value.length > 255) {
+      setErrors({ ...errors, username: "Nazwa użytkownika jest wymagana." });
+    } else if (value.length > 64) {
       setErrors({
         ...errors,
-        username: "Imię i nazwisko nie powinno mieć więcej niż 255 znaków.",
+        username: "Nazwa użytkownika nie powinna mieć więcej niż 64 znaki.",
       });
     }
   };
@@ -112,7 +119,9 @@ const RegisterCard = () => {
 
     AuthenticationService.register(token).then(
       () => {
-        window.location.href = "/";
+        let id = AuthenticationService.getUserDetails()?._id;
+        window.location.href = `/${id}`;
+        enqueueSnackbar("Utworzono konto!");
       },
       (error) => {
         const resMessage =
@@ -125,6 +134,7 @@ const RegisterCard = () => {
           ...values,
           message: resMessage,
         });
+        enqueueSnackbar("Wystąpił błąd. Spróbuj utworzyć konto ponownie.");
       }
     );
   };
@@ -232,6 +242,7 @@ const RegisterCard = () => {
                 variant="contained"
                 type="submit"
                 size="large"
+                className="register-button"
                 style={{
                   backgroundColor: "#303F9F",
                   color: "white",

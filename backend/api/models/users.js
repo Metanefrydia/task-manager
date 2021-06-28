@@ -6,11 +6,13 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: true
+    required: true,
+    maxlength: 64
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 64
   },
   groups: [{
     type: mongoose.Schema.Types.ObjectId,

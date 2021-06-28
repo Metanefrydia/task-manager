@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const taskSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        maxlength: 256
     },
     description: {
         type: String,
-        required: false
+        required: false,
+        maxlength: 256
     },
     status: {
         type: String,

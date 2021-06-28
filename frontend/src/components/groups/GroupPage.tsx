@@ -6,6 +6,7 @@ import "./group.css";
 import GroupService from "../../services/GroupsService";
 import AuthenticationService from "../../services/AuthenticationService";
 import { RouteComponentProps } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface RouteParams {
   id: string;
@@ -29,11 +30,11 @@ const GroupPage: React.FC<GroupPageInterface> = (props) => {
       setAddPanelToHide();
     });
   };
+  const { enqueueSnackbar } = useSnackbar();
 
   const readUsers = () => {
     AuthenticationService.getUsers().then((response: any) => {
       setUsers(response.data.data.users);
-      console.log(users);
       setUsersLoading(false);
     });
   };
@@ -46,9 +47,13 @@ const GroupPage: React.FC<GroupPageInterface> = (props) => {
 
   const deleteGroup = (groupIndex: number, groupId: string) => {
     groups.data.splice(groupIndex, 1);
-    GroupService.deleteGroup(groupId).then((response) => {
-      readGroups();
-    });
+    GroupService.deleteGroup(groupId).then(
+      () => {
+        enqueueSnackbar("Usunięto grupę!");
+        readGroups();
+      },
+      () => enqueueSnackbar("Wystąpił błąd. Spróbuj usunąć grupę ponownie.")
+    );
   };
 
   const setAddPanelToHide = () => {
