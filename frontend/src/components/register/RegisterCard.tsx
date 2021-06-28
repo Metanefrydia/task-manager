@@ -60,6 +60,8 @@ const RegisterCard = () => {
       setErrors({ ...errors, email: "Email jest wymagany." });
     } else if (!re.test(String(value).toLowerCase())) {
       setErrors({ ...errors, email: "Niepoprawny adres email." });
+    } else if (value.length > 36) {
+      setErrors({ ...errors, email: "Email nie powinien mieć więcej ni 36 znaków."});
     }
   };
 
@@ -67,10 +69,10 @@ const RegisterCard = () => {
     setErrors({ ...errors, username: "" });
     if (value.length === 0) {
       setErrors({ ...errors, username: "Imię i nazwisko jest wymagane." });
-    } else if (value.length > 255) {
+    } else if (value.length > 36) {
       setErrors({
         ...errors,
-        username: "Imię i nazwisko nie powinno mieć więcej niż 255 znaków.",
+        username: "Imię i nazwisko nie powinno mieć więcej niż 36 znaków.",
       });
     }
   };

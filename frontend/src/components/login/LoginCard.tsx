@@ -93,7 +93,7 @@ const LoginCard = () => {
         if (Boolean(resMessage)) {
           setValues({
             ...values,
-            message: "Błędne dane",
+            message: "Email lub hasło jest niepoprawne. Spróbuj ponownie.",
           });
         }
       }
@@ -194,7 +194,7 @@ const LoginCard = () => {
                   {errors?.password}
                 </FormHelperText>
               </FormControl>
-              <Box style={{ minHeight: "4vh" }} margin="normal">
+              <Box style={{ minHeight: "6vh", color: "red" }} margin="normal">
                 {values.message && (
                   <div className="wrong-input">{values.message}</div>
                 )}
